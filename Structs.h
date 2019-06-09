@@ -2,6 +2,7 @@
 #define BUU_TICTACTOE_STRUCTS_H
 
 #include <vector>
+#include <string>
 
 using namespace std;
 
@@ -12,6 +13,8 @@ const int CIRCLE_CELL_CODE = 2;
 const int FIRST_PLAYER_WIN = 0;
 const int SECOND_PLAYER_WIN = 1;
 const int DRAW = 2;
+
+const string MESSAGE_POSITION_FILLED = "position is already filled, choose another one!";
 
 struct Position {
     Position(int x, int y) : x(x), y(y) {}

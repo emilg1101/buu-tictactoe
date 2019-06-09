@@ -29,6 +29,7 @@ void ConsoleDisplay::showWrongMove() {
 
 void ConsoleDisplay::showWinner(int type) {
 
+
 }
 
 Position ConsoleDisplay::getFirstPlayerMove() {
