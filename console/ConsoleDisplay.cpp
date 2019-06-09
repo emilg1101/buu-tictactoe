@@ -5,12 +5,12 @@ using namespace std;
 
 ConsoleDisplay::ConsoleDisplay() {}
 
-ConsoleDisplay::~ConsoleDisplay() {
-
-}
+ConsoleDisplay::~ConsoleDisplay() {}
 
 Configuration ConsoleDisplay::getConfiguration() {
-    return Configuration();
+    Configuration configuration = Configuration();
+    configuration.IS_MULTIPLAYER = true;
+    return configuration;
 }
 
 void ConsoleDisplay::drawField(Field field) {
@@ -35,18 +35,12 @@ Position ConsoleDisplay::getFirstPlayerMove() {
     cout << "<Player1>enter position: ";
     int x, y;
     cin >> x >> y;
-    Position position = Position();
-    position.x = x;
-    position.y = y;
-    return position;
+    return Position(x, y);
 }
 
 Position ConsoleDisplay::getSecondPlayerMove() {
     cout << "<Player2>enter position: ";
     int x, y;
     cin >> x >> y;
-    Position position = Position();
-    position.x = x;
-    position.y = y;
-    return position;
+    return Position(x, y);
 }

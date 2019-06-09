@@ -5,7 +5,17 @@
 
 using namespace std;
 
+const int BLANK_CELL_CODE = 0;
+const int CROSS_CELL_CODE = 1;
+const int CIRCLE_CELL_CODE = 2;
+
+const int FIRST_PLAYER_WIN = 0;
+const int SECOND_PLAYER_WIN = 1;
+const int DRAW = 2;
+
 struct Position {
+    Position(int x, int y) : x(x), y(y) {}
+
     int x, y;
 };
 
