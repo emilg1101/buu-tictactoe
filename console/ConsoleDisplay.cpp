@@ -22,39 +22,37 @@ Configuration ConsoleDisplay::getConfiguration() {
     return configuration;
 }
 
-void moveToMessageCoord(){
+void moveToMessageCoord() {
     destCoord.X = 0;
     destCoord.Y = 12;
     SetConsoleCursorPosition(hStdout, destCoord);
 }
 
-void saveCurrentCoord(){
+void saveCurrentCoord() {
     CONSOLE_SCREEN_BUFFER_INFO csbi;
-    if(GetConsoleScreenBufferInfo (
-            GetStdHandle(STD_OUTPUT_HANDLE), &csbi))
-    {
+    if (GetConsoleScreenBufferInfo(
+            GetStdHandle(STD_OUTPUT_HANDLE), &csbi)) {
         currentCoordX = csbi.dwCursorPosition.X;
         currentCoordY = csbi.dwCursorPosition.Y;
-    }
-    else{
+    } else {
         currentCoordX = 0;
         currentCoordY = 0;
     }
 }
 
-void moveToCurrentCoord(){
+void moveToCurrentCoord() {
     destCoord.X = currentCoordX;
     destCoord.Y = currentCoordY;
     SetConsoleCursorPosition(hStdout, destCoord);
 }
 
-void removePreviousLine(){
+void removePreviousLine() {
     saveCurrentCoord();
     cout << "                                                                  ";
     moveToCurrentCoord();
 }
 
-void moveToStartCoord(){
+void moveToStartCoord() {
     destCoord.X = 0;
     destCoord.Y = 1;
     SetConsoleCursorPosition(hStdout, destCoord);
@@ -79,9 +77,9 @@ void ConsoleDisplay::showWrongMove() {
 
 void ConsoleDisplay::showWinner(int type) {
     removePreviousLine();
-    if(type == 0){
+    if (type == 0) {
         cout << "First player win";
-    } else if (type == 1){
+    } else if (type == 1) {
         cout << "Second player win";
     } else {
         cout << "Draw";
@@ -103,5 +101,3 @@ Position ConsoleDisplay::getSecondPlayerMove() {
     cin >> x >> y;
     return Position(x, y);
 }
-
-
