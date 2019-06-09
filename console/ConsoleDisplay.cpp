@@ -60,36 +60,6 @@ void moveToStartCoord(){
     SetConsoleCursorPosition(hStdout, destCoord);
 }
 
-void test1(){
-    moveToStartCoord();
-    for (int i = 0; i < 11; i++) {
-        for (int j = 0; j < 11; j++) {
-            if(i == 5 && j == 5) {
-                cout << 1 << " ";
-            }else{
-                cout << 0 << " ";
-            }
-        }
-        cout << endl;
-    }
-    moveToMessageCoord();
-}
-
-void test2(){
-    moveToStartCoord();
-    for (int i = 0; i < 11; i++) {
-        for (int j = 0; j < 11; j++) {
-            if(i == 5 && j == 5) {
-                cout << 0 << " ";
-            }else{
-                cout << 0 << " ";
-            }
-        }
-        cout << endl;
-    }
-    moveToMessageCoord();
-}
-
 void ConsoleDisplay::drawField(Field field) {
     moveToStartCoord();
     cout << "Game field:" << endl;
