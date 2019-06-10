@@ -11,7 +11,7 @@ public:
 
     virtual Position getMove() = 0;
 
-    virtual void setField(Field field) = 0;
+    virtual void setMove(Position position) = 0;
 };
 
 #endif
