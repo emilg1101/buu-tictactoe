@@ -22,10 +22,10 @@ bool isMultiPlayer;
 
 const int MAX_FIELD_HEIGHT = 11;
 const int MAX_FIELD_WIDTH = 11;
-const int CONSOLE_WORKING_HEIGHT = 20;
+const int CONSOLE_WORKING_HEIGHT = 30;
 const Coord START_TABLE_COORD = Coord(0, 1);
-const Coord START_PLAYER_INPUT_COORD = Coord(0, 13);
-const Coord START_MESSAGE_COORD = Coord(0, 12);
+const Coord START_PLAYER_INPUT_COORD = Coord(0, 25);
+const Coord START_MESSAGE_COORD = Coord(0, 24);
 
 Coord currentCoord = Coord();
 
@@ -217,9 +217,39 @@ void ConsoleDisplay::drawField(Field field) {
     moveToStartCoord();
     cout << "Game field:" << endl;
     moveToTableStartCoord();
-    for (int i = 0; i < field.getSize(); i++) {
-        for (int j = 0; j < field.getSize(); j++) {
-            cout << field[j][i] << " ";
+    for (int i = 0; i <= MAX_FIELD_HEIGHT * 2; i++) {
+        for (int j = 0; j <= MAX_FIELD_WIDTH * 2; j++) {
+            if (i == 0 && j == 0){
+                cout << char(218);
+            } else if (i == 0 && j == MAX_FIELD_WIDTH * 2){
+                cout << char(191);
+            } else if (i == MAX_FIELD_HEIGHT * 2  && j == 0){
+                cout << char(192);
+            } else if (i == MAX_FIELD_HEIGHT * 2  && j == MAX_FIELD_WIDTH * 2){
+                cout << char(217);
+            } else if ((i + j) % 2 == 0 && i % 2 == 1){
+                if (field[j / 2][i / 2] == 1) {
+                    cout << "X";
+                } else if (field[j / 2][i / 2] == 2){
+                    cout << "0";
+                } else {
+                    cout << " ";
+                }
+            } else if (i % 2 == 0 && j % 2 == 1){
+                cout << char(196);
+            } else if (i % 2 == 1 && j % 2 == 0){
+                cout << char(124);
+            } else if ((i + j) % 2 == 0 && i % 2 == 0){
+                cout << char(197);
+            } else if ((i + j) % 2 == 0 && i % 2 == 0 && i == 0){
+                cout << char(193);
+            } else if ((i + j) % 2 == 0 && i % 2 == 0 && i == MAX_FIELD_HEIGHT * 2){
+                cout << char(194);
+            } else if ((i + j) % 2 == 0 && i % 2 == 0 && j == 0){
+                cout << char(180);
+            } else if ((i + j) % 2 == 0 && i % 2 == 0 && j == MAX_FIELD_WIDTH * 2){
+                cout << char(195);
+            }
         }
         cout << endl;
     }
