@@ -18,7 +18,7 @@ ConsoleDisplay::~ConsoleDisplay() {}
 Configuration ConsoleDisplay::getConfiguration() {
 
     Configuration configuration = Configuration();
-    configuration.IS_MULTIPLAYER = true;
+    configuration.IS_MULTIPLAYER = false;
     return configuration;
 }
 

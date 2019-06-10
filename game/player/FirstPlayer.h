@@ -10,7 +10,7 @@ public:
 
     Position getMove() override;
 
-    void setMove(Position position) override;
+    void setMove(Position position, int cellType) override;
 };
 
 #endif //BUU_TICTACTOE_FIRSTPLAYER_H
