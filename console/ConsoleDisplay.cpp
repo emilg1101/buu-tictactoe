@@ -4,8 +4,22 @@
 
 using namespace std;
 
-int currentCoordX;
-int currentCoordY;
+struct Coord{
+    int x;
+    int y;
+    Coord(){};
+    Coord(int _x, int _y){
+        x = _x;
+        y = _y;
+    }
+};
+
+const Coord START_COORD = Coord(0,0);
+const Coord START_TABLE_COORD = Coord(0, 1);
+const Coord START_PLAYER_INPUT_COORD = Coord(0, 13);
+const Coord START_MESSAGE_COORD = Coord(0, 12);
+
+Coord currentCoord = Coord();
 
 CONSOLE_SCREEN_BUFFER_INFO csbi;
 HANDLE hStdout = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -22,9 +36,28 @@ Configuration ConsoleDisplay::getConfiguration() {
     return configuration;
 }
 
-void moveToMessageCoord() {
-    destCoord.X = 0;
-    destCoord.Y = 12;
+int getAvailableColumns(){
+    CONSOLE_SCREEN_BUFFER_INFO sbInfo;
+    GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &sbInfo);
+    int availableColumns = sbInfo.dwSize.X;
+    return availableColumns;
+}
+
+void moveToTableStartCoord(){
+    destCoord.X = START_TABLE_COORD.x;
+    destCoord.Y = START_TABLE_COORD.y;
+    SetConsoleCursorPosition(hStdout, destCoord);
+}
+
+void moveToMessageStartCoord() {
+    destCoord.X = START_MESSAGE_COORD.x;
+    destCoord.Y = START_MESSAGE_COORD.y;
+    SetConsoleCursorPosition(hStdout, destCoord);
+}
+
+void moveToPlayerInputStartCoord(){
+    destCoord.X = START_PLAYER_INPUT_COORD.x;
+    destCoord.Y = START_PLAYER_INPUT_COORD.y;
     SetConsoleCursorPosition(hStdout, destCoord);
 }
 
@@ -32,51 +65,64 @@ void saveCurrentCoord() {
     CONSOLE_SCREEN_BUFFER_INFO csbi;
     if (GetConsoleScreenBufferInfo(
             GetStdHandle(STD_OUTPUT_HANDLE), &csbi)) {
-        currentCoordX = csbi.dwCursorPosition.X;
-        currentCoordY = csbi.dwCursorPosition.Y;
+        currentCoord.x = csbi.dwCursorPosition.X;
+        currentCoord.y = csbi.dwCursorPosition.Y;
     } else {
-        currentCoordX = 0;
-        currentCoordY = 0;
+        currentCoord.x = 0;
+        currentCoord.y = 0;
     }
 }
 
 void moveToCurrentCoord() {
-    destCoord.X = currentCoordX;
-    destCoord.Y = currentCoordY;
+    destCoord.X = currentCoord.x;
+    destCoord.Y = currentCoord.y;
     SetConsoleCursorPosition(hStdout, destCoord);
 }
 
-void removePreviousLine() {
+void removeLineFromCurrentCoord(){
     saveCurrentCoord();
-    cout << "                                                                  ";
+    for(int i = 0; i < getAvailableColumns(); i++){
+        cout << " ";
+    }
     moveToCurrentCoord();
 }
 
 void moveToStartCoord() {
-    destCoord.X = 0;
-    destCoord.Y = 1;
+    destCoord.X = START_COORD.x;
+    destCoord.Y = START_COORD.y;
     SetConsoleCursorPosition(hStdout, destCoord);
+}
+
+void removeMessage(){
+    moveToMessageStartCoord();
+    removeLineFromCurrentCoord();
 }
 
 void ConsoleDisplay::drawField(Field field) {
     moveToStartCoord();
+    removeLineFromCurrentCoord();
+    moveToStartCoord();
     cout << "Game field:" << endl;
+    moveToTableStartCoord();
     for (int i = 0; i < field.getSize(); i++) {
         for (int j = 0; j < field.getSize(); j++) {
-            cout << field[i][j] << " ";
+            cout << field[j][i] << " ";
         }
         cout << endl;
     }
-    moveToMessageCoord();
 }
 
 void ConsoleDisplay::showWrongMove() {
-    removePreviousLine();
+    moveToMessageStartCoord();
+    removeLineFromCurrentCoord();
+    moveToMessageStartCoord();
     cout << "Wrong input!" << endl;
 }
 
 void ConsoleDisplay::showWinner(int type) {
-    removePreviousLine();
+    moveToMessageStartCoord();
+    removeLineFromCurrentCoord();
+    moveToMessageStartCoord();
     if (type == 0) {
         cout << "First player win";
     } else if (type == 1) {
@@ -87,17 +133,23 @@ void ConsoleDisplay::showWinner(int type) {
 }
 
 Position ConsoleDisplay::getFirstPlayerMove() {
-    removePreviousLine();
+    moveToPlayerInputStartCoord();
+    removeLineFromCurrentCoord();
+    moveToPlayerInputStartCoord();
     cout << "<Player1>enter position: ";
     int x, y;
     cin >> x >> y;
+    removeMessage();
     return Position(x, y);
 }
 
 Position ConsoleDisplay::getSecondPlayerMove() {
-    removePreviousLine();
+    moveToPlayerInputStartCoord();
+    removeLineFromCurrentCoord();
+    moveToPlayerInputStartCoord();
     cout << "<Player2>enter position: ";
     int x, y;
     cin >> x >> y;
+    removeMessage();
     return Position(x, y);
 }
