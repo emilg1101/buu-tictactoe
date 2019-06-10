@@ -20,9 +20,9 @@ public:
 
     int countHorizontal(Field field, int type, Position position);
 
-    int countDiagonalLeftToRight(Field field, int type, Position position);
-
     int countDiagonalRightToLeft(Field field, int type, Position position);
+
+    int countDiagonalLeftToRight(Field field, int type, Position position);
 };
 
 #endif
