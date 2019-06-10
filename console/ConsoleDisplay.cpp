@@ -20,6 +20,9 @@ string secondPlayerName;
 
 bool isMultiPlayer;
 
+const int MAX_FIELD_HEIGHT = 11;
+const int MAX_FIELD_WIDTH = 11;
+const int CONSOLE_WORKING_HEIGHT = 20;
 const Coord START_TABLE_COORD = Coord(0, 1);
 const Coord START_PLAYER_INPUT_COORD = Coord(0, 13);
 const Coord START_MESSAGE_COORD = Coord(0, 12);
@@ -141,11 +144,41 @@ void askTwoUsersName(){
     moveToStartCoord();
 }
 
-void ConsoleDisplay::showWrongMove() {
+void cleanConsoleNoWorkingSpace(){
+    destCoord.X = 0;
+    for (int i = START_PLAYER_INPUT_COORD.y + 1; i < CONSOLE_WORKING_HEIGHT; i++){
+        destCoord.Y = i;
+        SetConsoleCursorPosition(hStdout, destCoord);
+        removeLineFromCurrentCoord();
+    }
+    moveToStartCoord();
+}
+
+void showWrongMoveMessage(){
+    cleanConsoleNoWorkingSpace();
     moveToMessageStartCoord();
     removeLineFromCurrentCoord();
     moveToMessageStartCoord();
     cout << "Wrong input!" << endl;
+}
+
+bool isInputPositionRight(string xStr, string yStr){
+    try{
+        int x = stoi(xStr);
+        int y = stoi(yStr);
+        if ((x > MAX_FIELD_WIDTH - 1) || (y > MAX_FIELD_HEIGHT - 1)){
+            return false;
+        }
+    } catch (invalid_argument){
+        return false;
+    } catch (out_of_range){
+        return false;
+    }
+    return true;
+}
+
+void ConsoleDisplay::showWrongMove() {
+    showWrongMoveMessage();
 }
 
 void ConsoleDisplay::showWinner(int type) {
@@ -178,6 +211,7 @@ Configuration ConsoleDisplay::getConfiguration() {
 }
 
 void ConsoleDisplay::drawField(Field field) {
+    cleanConsoleNoWorkingSpace();
     moveToStartCoord();
     removeLineFromCurrentCoord();
     moveToStartCoord();
@@ -196,8 +230,18 @@ Position ConsoleDisplay::getFirstPlayerMove() {
     removeLineFromCurrentCoord();
     moveToPlayerInputStartCoord();
     cout << "<" << firstPlayerName << ">enter position: ";
-    int x, y;
-    cin >> x >> y;
+    string xStr, yStr;
+    cin >> xStr >> yStr;
+    while(! isInputPositionRight(xStr, yStr)){
+        showWrongMoveMessage();
+        moveToPlayerInputStartCoord();
+        removeLineFromCurrentCoord();
+        moveToPlayerInputStartCoord();
+        cout << "<" << firstPlayerName << ">enter position: ";
+        cin >> xStr >> yStr;
+    }
+    int x = stoi(xStr);
+    int y = stoi(yStr);
     removeMessage();
     return Position(x, y);
 }
@@ -207,8 +251,18 @@ Position ConsoleDisplay::getSecondPlayerMove() {
     removeLineFromCurrentCoord();
     moveToPlayerInputStartCoord();
     cout << "<" << secondPlayerName << ">enter position: ";
-    int x, y;
-    cin >> x >> y;
+    string xStr, yStr;
+    cin >> xStr >> yStr;
+    while(! isInputPositionRight(xStr, yStr)){
+        showWrongMoveMessage();
+        moveToPlayerInputStartCoord();
+        removeLineFromCurrentCoord();
+        moveToPlayerInputStartCoord();
+        cout << "<" << firstPlayerName << ">enter position: ";
+        cin >> xStr >> yStr;
+    }
+    int x = stoi(xStr);
+    int y = stoi(yStr);
     removeMessage();
     return Position(x, y);
 }
