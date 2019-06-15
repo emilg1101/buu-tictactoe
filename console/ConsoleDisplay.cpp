@@ -225,9 +225,23 @@ void ConsoleDisplay::drawField(Field field) {
                 cout << char(191);
             } else if (i == MAX_FIELD_HEIGHT * 2  && j == 0){
                 cout << char(192);
-            } else if (i == MAX_FIELD_HEIGHT * 2  && j == MAX_FIELD_WIDTH * 2){
+            } else if (i == MAX_FIELD_HEIGHT * 2  && j == MAX_FIELD_WIDTH * 2) {
                 cout << char(217);
-            } else if ((i + j) % 2 == 0 && i % 2 == 1){
+            } else if ((i % 2 == 0) && (j % 2 == 1)) {
+                cout << char(196);
+            } else if ((i % 2 == 1) && (j % 2 == 0)) {
+                cout << char(179);
+            } else if (i == 0 && (j % 2 == 0) && j != 0 && j != MAX_FIELD_WIDTH * 2) {
+                cout << char(194);
+            } else if (i == MAX_FIELD_WIDTH * 2 && (j % 2 == 0) && j != 0 && j != MAX_FIELD_WIDTH * 2) {
+                cout << char(193);
+            } else if (j == 0 && (i % 2 == 0) && i != 0 && i != MAX_FIELD_WIDTH * 2) {
+                cout << char(195);
+            } else if (j == MAX_FIELD_WIDTH * 2 && (i % 2 == 0) && i != 0 && i != MAX_FIELD_WIDTH * 2) {
+                cout << char(180);
+            } else if ((i % 2 == 0) && (j % 2 == 0) && i != 0 && i != MAX_FIELD_WIDTH * 2 && j != 0 && j != MAX_FIELD_WIDTH * 2){
+                cout << char(197);
+            } else if ((i % 2 == 1) && (j % 2 == 1) && i != 0 && i != MAX_FIELD_WIDTH * 2 && j != 0 && j != MAX_FIELD_WIDTH * 2){
                 if (field[j / 2][i / 2] == 1) {
                     cout << "X";
                 } else if (field[j / 2][i / 2] == 2){
@@ -235,20 +249,6 @@ void ConsoleDisplay::drawField(Field field) {
                 } else {
                     cout << " ";
                 }
-            } else if (i % 2 == 0 && j % 2 == 1){
-                cout << char(196);
-            } else if (i % 2 == 1 && j % 2 == 0){
-                cout << char(124);
-            } else if ((i + j) % 2 == 0 && i % 2 == 0){
-                cout << char(197);
-            } else if ((i + j) % 2 == 0 && i % 2 == 0 && i == 0){
-                cout << char(193);
-            } else if ((i + j) % 2 == 0 && i % 2 == 0 && i == MAX_FIELD_HEIGHT * 2){
-                cout << char(194);
-            } else if ((i + j) % 2 == 0 && i % 2 == 0 && j == 0){
-                cout << char(180);
-            } else if ((i + j) % 2 == 0 && i % 2 == 0 && j == MAX_FIELD_WIDTH * 2){
-                cout << char(195);
             }
         }
         cout << endl;
