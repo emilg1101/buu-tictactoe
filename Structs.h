@@ -73,6 +73,9 @@ struct Save {
 
     Field field;
     int lastMovePlayer;
+    bool isMultiplayer;
+    string firstPlayer;
+    string secondPlayer;
 };
 
 #endif

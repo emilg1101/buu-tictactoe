@@ -1,6 +1,8 @@
 #include "Saver.h"
 
-Saver::Saver() {}
+Saver::Saver(bool _isMultiplayer, string _firstPlayer, string _secondPlayer) {
+
+}
 
 bool Saver::hasSavedGame() {
     return false;

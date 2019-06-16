@@ -7,7 +7,7 @@
 #include "game/storage/Saver.h"
 
 int main() {
-    Saver saver = Saver();
+    Saver saver = Saver(true, "Player1", "Player2");
     if (saver.hasSavedGame()) {
         cout << "Has Game" << endl;
     } else {

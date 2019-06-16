@@ -5,7 +5,7 @@
 
 class Saver {
 public:
-    Saver();
+    Saver(bool _isMultiplayer, string _firstPlayer, string _secondPlayer);
 
     bool hasSavedGame();
 
