@@ -12,17 +12,9 @@ public:
 
     void fillField(Position position, int code);
 
-    bool chickWin(Field field, int type, Position newPosition);
+    bool checkWin(Field field, int type, Position newPosition);
 
     bool makeMove(int playerType, PlayerIOStream *player);
-
-    int countVertical(Field field, int type, Position position);
-
-    int countHorizontal(Field field, int type, Position position);
-
-    int countDiagonalLeftToRight(Field field, int type, Position position);
-
-    int countDiagonalRightToLeft(Field field, int type, Position position);
 };
 
 #endif
