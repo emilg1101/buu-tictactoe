@@ -14,6 +14,8 @@ const int FIRST_PLAYER_WIN = 0;
 const int SECOND_PLAYER_WIN = 1;
 const int DRAW = 2;
 
+const int WIN_COUNT = 3;
+
 const string MESSAGE_POSITION_FILLED = "position is already filled, choose another one!";
 
 struct Position {
@@ -50,6 +52,15 @@ public:
 
     int getSize() const {
         return size;
+    }
+
+    bool inRange(Position position) {
+        if (position.x < 0 || position.x >= size) return false;
+        return !(position.y < 0 || position.y >= size);
+    }
+
+    int get(Position position) {
+        return dArray[position.x][position.y];
     }
 
 private:
