@@ -10,6 +10,6 @@ Position SecondPlayer::getMove() {
     return display->getSecondPlayerMove();
 }
 
-void SecondPlayer::setField(Field field) {
+void SecondPlayer::setMove(Position position) {
 
 }

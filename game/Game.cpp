@@ -23,9 +23,6 @@ Game::Game(PlayerIOStream *_playerFirst, PlayerIOStream *_playerSecond, Display 
 void Game::start() {
     display->drawField(field);
 
-    playerFirst->setField(field);
-    playerSecond->setField(field);
-
     bool end;
     while (true) {
         end = makeMove(CROSS_CELL_CODE, playerFirst);

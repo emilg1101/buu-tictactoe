@@ -10,7 +10,7 @@ public:
 
     Position getMove() override;
 
-    void setField(Field field) override;
+    void setMove(Position position) override;
 };
 
 #endif //BUU_TICTACTOE_FIRSTPLAYER_H

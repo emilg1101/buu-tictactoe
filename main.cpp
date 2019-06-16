@@ -4,6 +4,7 @@
 #include "game/player/FirstPlayer.h"
 #include "game/player/SecondPlayer.h"
 #include "game/player/ComputerPlayer.h"
+#include "game/storage/Saver.h"
 
 int main() {
     Display *display = new ConsoleDisplay();
