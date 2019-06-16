@@ -7,19 +7,11 @@
 #include "game/storage/Saver.h"
 
 int main() {
-    Saver saver = Saver();
-    Display* display = new ConsoleDisplay();
-
-    if (saver.hasSavedGame()) {
-        cout << "Has game" << endl;
-    } else {
-        cout << "No game" << endl;
-    }
-
+    Display *display = new ConsoleDisplay();
     Configuration configuration = display->getConfiguration();
 
-    PlayerIOStream* firstPlayer = new FirstPlayer(display);
-    PlayerIOStream* secondPlayer;
+    PlayerIOStream *firstPlayer = new FirstPlayer(display);
+    PlayerIOStream *secondPlayer;
 
     if (configuration.IS_MULTIPLAYER) {
         secondPlayer = new SecondPlayer(display);
@@ -29,5 +21,7 @@ int main() {
 
     Game game = Game(firstPlayer, secondPlayer, display);
     game.start();
+    int i;
+    cin >> i;
     return 0;
 }
