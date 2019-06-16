@@ -1,8 +1,6 @@
 #include "Saver.h"
 
-Saver::Saver() {
-
-}
+Saver::Saver() {}
 
 bool Saver::hasSavedGame() {
     return false;
@@ -13,5 +11,9 @@ Save Saver::getSave() {
 }
 
 void Saver::newSave(Field field, int lastMovePlayer) {
+
+}
+
+void Saver::deleteSave() {
 
 }

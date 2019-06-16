@@ -7,6 +7,13 @@
 #include "game/storage/Saver.h"
 
 int main() {
+    Saver saver = Saver();
+    if (saver.hasSavedGame()) {
+        cout << "Has Game" << endl;
+    } else {
+        cout << "No game" << endl;
+    }
+
     Display *display = new ConsoleDisplay();
     Configuration configuration = display->getConfiguration();
 
