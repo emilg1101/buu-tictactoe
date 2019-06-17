@@ -5,14 +5,10 @@
 #include "game/player/SecondPlayer.h"
 #include "game/player/ComputerPlayer.h"
 #include "game/storage/Saver.h"
-
+#include <fstream>
 int main() {
-    Saver saver = Saver(true, "Player1", "Player2");
-    if (saver.hasSavedGame()) {
-        cout << "Has Game" << endl;
-    } else {
-        cout << "No game" << endl;
-    }
+    Saver *saver = new Saver("Player1", "Player2");
+    saver->hasSavedGame();
 
     Display *display = new ConsoleDisplay();
     Configuration configuration = display->getConfiguration();
@@ -26,9 +22,10 @@ int main() {
         secondPlayer = new ComputerPlayer();
     }
 
-    Game game = Game(firstPlayer, secondPlayer, display);
+    Game game = Game(firstPlayer, secondPlayer, display, saver);
     game.start();
     int i;
     cin >> i;
+
     return 0;
 }

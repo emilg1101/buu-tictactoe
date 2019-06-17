@@ -71,11 +71,11 @@ private:
 struct Save {
     Save(const Field &field, int lastMovePlayer) : field(field), lastMovePlayer(lastMovePlayer) {}
 
-    Field field;
-    int lastMovePlayer;
     bool isMultiplayer;
+    int lastMovePlayer;
     string firstPlayer;
     string secondPlayer;
+    Field field;
 };
 
 #endif

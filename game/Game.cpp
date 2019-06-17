@@ -12,12 +12,15 @@ Field field;
 
 WinningCheckAlgorithm checkAlgorithm;
 
-Game::Game(PlayerIOStream *_playerFirst, PlayerIOStream *_playerSecond, Display *_display) {
+Saver *saver;
+
+Game::Game(PlayerIOStream *_playerFirst, PlayerIOStream *_playerSecond, Display *_display, Saver *_saver) {
     playerFirst = _playerFirst;
     playerSecond = _playerSecond;
     display = _display;
     field = Field(size);
     checkAlgorithm = WinningCheckAlgorithm();
+    saver = _saver;
 }
 
 void Game::start() {
