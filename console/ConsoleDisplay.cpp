@@ -5,11 +5,13 @@
 
 using namespace std;
 
-struct Coord{
+struct Coord {
     int x;
     int y;
-    Coord(){};
-    Coord(int _x, int _y){
+
+    Coord() {};
+
+    Coord(int _x, int _y) {
         x = _x;
         y = _y;
     }
@@ -48,20 +50,20 @@ CONSOLE_SCREEN_BUFFER_INFO csbi;
 HANDLE hStdout = GetStdHandle(STD_OUTPUT_HANDLE);
 COORD destCoord;
 
-int getAvailableColumns(){
+int getAvailableColumns() {
     CONSOLE_SCREEN_BUFFER_INFO sbInfo;
     GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &sbInfo);
     int availableColumns = sbInfo.dwSize.X;
     return availableColumns;
 }
 
-void moveToSecondLineStartCoord(){
+void moveToSecondLineStartCoord() {
     destCoord.X = 0;
     destCoord.Y = 1;
     SetConsoleCursorPosition(hStdout, destCoord);
 }
 
-void moveToTableStartCoord(){
+void moveToTableStartCoord() {
     destCoord.X = START_TABLE_COORD.x;
     destCoord.Y = START_TABLE_COORD.y;
     SetConsoleCursorPosition(hStdout, destCoord);
@@ -73,7 +75,7 @@ void moveToMessageStartCoord() {
     SetConsoleCursorPosition(hStdout, destCoord);
 }
 
-void moveToPlayerInputStartCoord(){
+void moveToPlayerInputStartCoord() {
     destCoord.X = START_PLAYER_INPUT_COORD.x;
     destCoord.Y = START_PLAYER_INPUT_COORD.y;
     SetConsoleCursorPosition(hStdout, destCoord);
@@ -97,9 +99,9 @@ void moveToCurrentCoord() {
     SetConsoleCursorPosition(hStdout, destCoord);
 }
 
-void removeLineFromCurrentCoord(){
+void removeLineFromCurrentCoord() {
     saveCurrentCoord();
-    for(int i = 0; i < getAvailableColumns(); i++){
+    for (int i = 0; i < getAvailableColumns(); i++) {
         cout << " ";
     }
     moveToCurrentCoord();
@@ -111,20 +113,20 @@ void moveToStartCoord() {
     SetConsoleCursorPosition(hStdout, destCoord);
 }
 
-void removeMessage(){
+void removeMessage() {
     moveToMessageStartCoord();
     removeLineFromCurrentCoord();
 }
 
-void askIsMultiPlayer(){
+void askIsMultiPlayer() {
     string mp;
     moveToSecondLineStartCoord();
     removeLineFromCurrentCoord();
     cout << "Is Multi Player Game[Y/N]: ";
     cin >> mp;
-    if (mp.compare("Y") == 0 ){
+    if (mp.compare("Y") == 0) {
         isMultiPlayer = true;
-    } else if(mp.compare("N") == 0 ){
+    } else if (mp.compare("N") == 0) {
         isMultiPlayer = false;
     } else {
         moveToStartCoord();
@@ -138,7 +140,7 @@ void askIsMultiPlayer(){
     moveToStartCoord();
 }
 
-void askOneUserName(){
+void askOneUserName() {
     cout << "Write player name: ";
     cin >> firstPlayerName;
     secondPlayerName = "Computer";
@@ -147,7 +149,7 @@ void askOneUserName(){
     moveToStartCoord();
 }
 
-void askTwoUsersName(){
+void askTwoUsersName() {
     cout << "Write 1 player name: ";
     cin >> firstPlayerName;
     cout << "Write 2 player name: ";
@@ -159,9 +161,9 @@ void askTwoUsersName(){
     moveToStartCoord();
 }
 
-void cleanConsoleNoWorkingSpace(){
+void cleanConsoleNoWorkingSpace() {
     destCoord.X = 0;
-    for (int i = START_PLAYER_INPUT_COORD.y + 1; i < CONSOLE_WORKING_HEIGHT; i++){
+    for (int i = START_PLAYER_INPUT_COORD.y + 1; i < CONSOLE_WORKING_HEIGHT; i++) {
         destCoord.Y = i;
         SetConsoleCursorPosition(hStdout, destCoord);
         removeLineFromCurrentCoord();
@@ -169,7 +171,7 @@ void cleanConsoleNoWorkingSpace(){
     moveToStartCoord();
 }
 
-void showWrongMoveMessage(){
+void showWrongMoveMessage() {
     cleanConsoleNoWorkingSpace();
     moveToMessageStartCoord();
     removeLineFromCurrentCoord();
@@ -177,96 +179,96 @@ void showWrongMoveMessage(){
     cout << "Wrong input!" << endl;
 }
 
-bool isInputPositionRight(string xStr, string yStr){
-    try{
+bool isInputPositionRight(string xStr, string yStr) {
+    try {
         char *xCh = new char[xStr.length()];
         strcpy(xCh, xStr.c_str());
-        if(xStr.length() > 1){
+        if (xStr.length() > 1) {
             return false;
         }
         int x = int(xCh[0]);
-        if (!(x >= 65 && x <= 75) && !(x >= 97 && x <= 107)){
+        if (!(x >= 65 && x <= 75) && !(x >= 97 && x <= 107)) {
             return false;
         }
         int y = stoi(yStr);
-        if (y > MAX_FIELD_WIDTH || y < 1){
+        if (y > MAX_FIELD_WIDTH || y < 1) {
             return false;
         }
-    } catch (invalid_argument){
+    } catch (invalid_argument) {
         return false;
-    } catch (out_of_range){
+    } catch (out_of_range) {
         return false;
     }
     return true;
 }
 
-void setNormalizePoint(string *xStr, string *yStr){
+void setNormalizePoint(string *xStr, string *yStr) {
     char *xCh = new char[xStr->length()];
     strcpy(xCh, xStr->c_str());
     int x = int(xCh[0]);
-    if(x >= 97 && x < 107){
+    if (x >= 97 && x < 107) {
         x -= 97;
-    } else if (x >= 65 && x <= 75){
+    } else if (x >= 65 && x <= 75) {
         x -= 65;
     }
     *xStr = to_string(x);
     *yStr = to_string(stoi(*yStr) - 1);
 }
 
-void tableDraw(Field field){
+void tableDraw(Field field) {
     cout << " ";
-    for(int i = 0; i < MAX_FIELD_WIDTH; i ++){
+    for (int i = 0; i < MAX_FIELD_WIDTH; i++) {
         cout << "   " << char(int('A') + i);
     }
     cout << endl;
-    for(int i = 0; i <= MAX_FIELD_HEIGHT * 2; i++){
-        if(i % 2 == 1){
-            if (i/2 + 1 < 10){
-                cout << " " << i/2 + 1;
-            } else{
-                cout << i/2 + 1;
+    for (int i = 0; i <= MAX_FIELD_HEIGHT * 2; i++) {
+        if (i % 2 == 1) {
+            if (i / 2 + 1 < 10) {
+                cout << " " << i / 2 + 1;
+            } else {
+                cout << i / 2 + 1;
             }
         } else {
             cout << "  ";
         }
-        for(int j = 0; j <= MAX_FIELD_WIDTH * 4; j++){
-            if (i == 0){
-                if (j == 0){
+        for (int j = 0; j <= MAX_FIELD_WIDTH * 4; j++) {
+            if (i == 0) {
+                if (j == 0) {
                     cout << LEFT_TOP_EDGE;
-                } else if (j == MAX_FIELD_WIDTH * 4){
+                } else if (j == MAX_FIELD_WIDTH * 4) {
                     cout << RIGHT_TOP_EDGE;
-                } else if (j % 4 == 0){
+                } else if (j % 4 == 0) {
                     cout << HEAD;
                 } else {
                     cout << HORIZONTAL;
                 }
-            } else if (i == MAX_FIELD_HEIGHT * 2){
-                if (j == 0){
+            } else if (i == MAX_FIELD_HEIGHT * 2) {
+                if (j == 0) {
                     cout << LEFT_BOT_EDGE;
-                } else if (j == MAX_FIELD_WIDTH * 4){
+                } else if (j == MAX_FIELD_WIDTH * 4) {
                     cout << RIGHT_BOT_EDGE;
-                } else if (j % 4 == 0){
+                } else if (j % 4 == 0) {
                     cout << STAND;
                 } else {
                     cout << HORIZONTAL;
                 }
-            } else if (i % 2 == 0){
+            } else if (i % 2 == 0) {
                 if (j == 0) {
                     cout << LEFT_SERIF;
                 } else if (j == MAX_FIELD_WIDTH * 4) {
                     cout << RIGHT_SERIF;
-                } else if (j % 4 == 0){
+                } else if (j % 4 == 0) {
                     cout << CROSS;
                 } else {
                     cout << HORIZONTAL;
                 }
             } else {
-                if (j % 4 == 0){
+                if (j % 4 == 0) {
                     cout << VERTICAL;
-                } else if (j % 2 == 0){
-                    if (field[j/4][(i-1)/2] == 1){
+                } else if (j % 2 == 0) {
+                    if (field[j / 4][(i - 1) / 2] == 1) {
                         cout << "X";
-                    } else if (field[j/4][(i-1)/2] == 2){
+                    } else if (field[j / 4][(i - 1) / 2] == 2) {
                         cout << "O";
                     } else {
                         cout << " ";
@@ -303,7 +305,7 @@ ConsoleDisplay::~ConsoleDisplay() {}
 
 Configuration ConsoleDisplay::getConfiguration() {
     askIsMultiPlayer();
-    if(isMultiPlayer){
+    if (isMultiPlayer) {
         askTwoUsersName();
     } else {
         askOneUserName();
@@ -329,7 +331,7 @@ Position ConsoleDisplay::getFirstPlayerMove() {
     cout << "<" << firstPlayerName << ">enter position: ";
     string xStr, yStr;
     cin >> xStr >> yStr;
-    while(! isInputPositionRight(xStr, yStr)){
+    while (!isInputPositionRight(xStr, yStr)) {
         showWrongMoveMessage();
         moveToPlayerInputStartCoord();
         removeLineFromCurrentCoord();
@@ -351,7 +353,7 @@ Position ConsoleDisplay::getSecondPlayerMove() {
     cout << "<" << secondPlayerName << ">enter position: ";
     string xStr, yStr;
     cin >> xStr >> yStr;
-    while(! isInputPositionRight(xStr, yStr)){
+    while (!isInputPositionRight(xStr, yStr)) {
         showWrongMoveMessage();
         moveToPlayerInputStartCoord();
         removeLineFromCurrentCoord();
