@@ -10,139 +10,106 @@ extern Field _field = Field(11);
 
 extern WinningCheckAlgorithm checkAlgorithm;
 
+int moves = 0;
+Position lastMove = Position(-1, -1);
+
 ComputerPlayer::ComputerPlayer() {
     checkAlgorithm = WinningCheckAlgorithm();
 }
 
+int start(int i) {
+    if (i == 0) return 0;
+    if (i == _field.getSize() - 1) return i - 2;
+    return i - 1;
+}
+
+int end(int i) {
+    if (i == 0) return 2;
+    if (i == _field.getSize() - 1) return i;
+    return i + 1;
+}
 
 bool checkWin(Field field, int type, Position pos) {
     return checkAlgorithm.checkWin(field, type, pos);
 }
 
 bool isMovesLeft(Field field) {
-    for (int i = 0; i < field.getSize(); i++)
-        for (int j = 0; j < field.getSize(); j++)
-            if (field[i][j] == BLANK_CELL_CODE)
-                return true;
-    return false;
+    return moves < _field.getSize() * _field.getSize();
 }
 
 int evaluate(Field field) {
     for (int i = 0; i < field.getSize(); i++) {
         for (int j = 0; j < field.getSize(); j++) {
-            if (/*field[i][j] == BLANK_CELL_CODE || */field[i][j] == CIRCLE_CELL_CODE) {
-                //return checkWin(CIRCLE_CELL_CODE, Position(i, j));
-                if (checkWin(field, CIRCLE_CELL_CODE, Position(i, j))) {
-                    return 1;
-                }
+            if (field[i][j] == CIRCLE_CELL_CODE && checkWin(field, CIRCLE_CELL_CODE, Position(i, j))) {
+                return 10;
             }
         }
     }
 
     for (int i = 0; i < field.getSize(); i++) {
         for (int j = 0; j < field.getSize(); j++) {
-            if (/*field[i][j] == BLANK_CELL_CODE || */field[i][j] == CROSS_CELL_CODE) {
-                //return -1 * checkWin(CROSS_CELL_CODE, Position(i, j));
-                if (checkWin(field, CROSS_CELL_CODE, Position(i, j))) {
-                    return -1;
-                }
+            if (field[i][j] == CROSS_CELL_CODE && checkWin(field, CROSS_CELL_CODE, Position(i, j))) {
+                return -10;
             }
         }
     }
-
-    int flag=0;
-    for(int i=0;i<field.getSize();i++)
-    {
-        for(int j=0;j<field.getSize();j++)
-        {
-            if(field[i][j]==BLANK_CELL_CODE)
-                flag=1;
-        }
-    }
-    if(flag)
-        return -2;
-    else
-        return 0;
+    return 0;
 }
 
 int minimax(Field field, int depth, bool isMax, int alpha, int beta) {
-    cout << depth << endl;
-   /* if (depth == 1)
-        return 0;*/
     int score = evaluate(field);
-    int value;
+    if (depth == 7)
+        return 0;
 
-    /*if (depth == 100)
-        return score;*/
+    if (score == 10) {
+        return score - depth;
+    }
 
-    /*if (score == 1)
-        return score;
+    if (score == -10) {
+        return score + depth;
+    }
 
-    if (score == -1)
-        return score;
-
-    if (score == 0)
-        return score;*/
-
-    if (!isMovesLeft(field))
-        return score;
+    if (!isMovesLeft(field)) {
+        return 0;
+    }
 
     if (isMax) {
-        score = -99;
-
-        bool f = false;
-        for (int i = 0; i < field.getSize(); i++) {
-            if (f) break;
-            for (int j = 0; j < field.getSize(); j++) {
+        int bestVal = -999;
+        for (int i = start(lastMove.x); i <= end(lastMove.x); i++) {
+            for (int j = start(lastMove.y); j <= end(lastMove.y); j++) {
                 if (field[i][j] == BLANK_CELL_CODE) {
                     field[i][j] = CIRCLE_CELL_CODE;
-                    value = minimax(field, depth + 1, !isMax, alpha, beta);
-
-                    if (value > score) {
-                        score = value;
-                    }
-
-                    alpha = max(alpha, score);
-
+                    int val = minimax(field, depth + 1, !isMax, alpha, beta);
+                    bestVal = max(bestVal, val);
+                    alpha = max(bestVal, alpha);
                     field[i][j] = BLANK_CELL_CODE;
-
-                    if (beta <= alpha) {
-                        f = true;
+                    if (beta <= alpha)
                         break;
-                    }
                 }
+                if (beta <= alpha)
+                    break;
             }
         }
-       // return best;
+        return bestVal;
     } else {
-        score = 99;
-        bool f = false;
-        for (int i = 0; i < field.getSize(); i++) {
-            if (f) break;
-            for (int j = 0; j < field.getSize(); j++) {
+        int bestVal = 999;
+        for (int i = start(lastMove.x); i <= end(lastMove.x); i++) {
+            for (int j = start(lastMove.y); j <= end(lastMove.y); j++) {
                 if (field[i][j] == BLANK_CELL_CODE) {
                     field[i][j] = CROSS_CELL_CODE;
-
-                    value = minimax(field, depth + 1, !isMax, alpha, beta);
-
-                    if (value < score) {
-                        score = value;
-                    }
-
-                    beta = min (beta, score);
-
+                    int val = minimax(field, depth + 1, !isMax, alpha, beta);
+                    bestVal = min(bestVal, val);
+                    beta = min(bestVal, beta);
                     field[i][j] = BLANK_CELL_CODE;
-
-                    if (beta <= alpha) {
-                        f = true;
+                    if (beta <= alpha)
                         break;
-                    }
                 }
+                if (beta <= alpha)
+                    break;
             }
         }
-        //return best;
+        return bestVal;
     }
-    return score;
 }
 
 Move findBestMove(Field field) {
@@ -150,13 +117,15 @@ Move findBestMove(Field field) {
     Move bestMove;
     bestMove.row = -1;
     bestMove.col = -1;
+    int alpha = -1000;
+    int beta = 1000;
 
-    for (int i = 0; i < field.getSize(); i++) {
-        for (int j = 0; j < field.getSize(); j++) {
+    for (int i = start(lastMove.x); i <= end(lastMove.x); i++) {
+        for (int j = start(lastMove.y); j <= end(lastMove.y); j++) {
             if (field[i][j] == BLANK_CELL_CODE) {
                 field[i][j] = CIRCLE_CELL_CODE;
 
-                int moveVal = minimax(field, 0, false, 99, -99);
+                int moveVal = minimax(field, 0, false, alpha, beta);
 
                 field[i][j] = BLANK_CELL_CODE;
 
@@ -175,15 +144,14 @@ Move findBestMove(Field field) {
 Position ComputerPlayer::getMove() {
     Move bestMove = findBestMove(_field);
     _field[bestMove.row][bestMove.col] = CIRCLE_CELL_CODE;
-    return Position(bestMove.row, bestMove.col);
+    moves++;
+    Position position = Position(bestMove.row, bestMove.col);
+    lastMove = position;
+    return position;
 }
 
 void ComputerPlayer::setMove(Position position, int cellType) {
     _field[position.x][position.y] = cellType;
-    /*for (int i = 0; i < _field.getSize(); i++) {
-        for (int j = 0; j < _field.getSize(); j++) {
-            cout << _field[i][j] << " ";
-        }
-        cout << endl;
-    }*/
+    lastMove = position;
+    moves++;
 }
