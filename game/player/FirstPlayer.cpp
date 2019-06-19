@@ -10,6 +10,6 @@ Position FirstPlayer::getMove() {
     return display->getFirstPlayerMove();
 }
 
-void FirstPlayer::setMove(Position position) {
+void FirstPlayer::setMove(Position position, int cellType) {
 
 }

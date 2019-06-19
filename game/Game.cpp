@@ -54,6 +54,7 @@ bool Game::makeMove(int playerType, PlayerIOStream *player) {
     fillField(position, playerType);
 
     display->drawField(field);
+    playerSecond->setMove(position, playerType);
     return checkWin(field, playerType, position);
 }
 
