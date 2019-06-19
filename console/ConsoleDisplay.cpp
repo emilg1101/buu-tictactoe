@@ -206,7 +206,7 @@ void setNormalizePoint(string *xStr, string *yStr) {
     char *xCh = new char[xStr->length()];
     strcpy(xCh, xStr->c_str());
     int x = int(xCh[0]);
-    if (x >= 97 && x < 107) {
+    if (x >= 97 && x <= 107) {
         x -= 97;
     } else if (x >= 65 && x <= 75) {
         x -= 65;
@@ -291,9 +291,9 @@ void ConsoleDisplay::showWinner(int type) {
     removeLineFromCurrentCoord();
     moveToMessageStartCoord();
     if (type == 0) {
-        cout << "First player win";
+        cout << secondPlayerName << " win";
     } else if (type == 1) {
-        cout << "Second player win";
+        cout << firstPlayerName<< " win";
     } else {
         cout << "Draw";
     }
