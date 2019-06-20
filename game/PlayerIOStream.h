@@ -5,9 +5,13 @@
 
 class PlayerIOStream {
 public:
-    PlayerIOStream() {};
+    int type;
 
-    ~PlayerIOStream() {};
+    PlayerIOStream(int _type) {
+        type = _type;
+    }
+
+    ~PlayerIOStream() {}
 
     virtual Position getMove() = 0;
 

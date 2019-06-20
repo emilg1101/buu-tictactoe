@@ -6,16 +6,12 @@ struct Move {
     int row, col;
 };
 
-extern Field _field = Field(11);
+extern Field _field = Field(FIELD_SIZE);
 
 extern WinningCheckAlgorithm checkAlgorithm;
 
 int moves = 0;
 Position lastMove = Position(-1, -1);
-
-ComputerPlayer::ComputerPlayer() {
-    checkAlgorithm = WinningCheckAlgorithm();
-}
 
 int start(int i) {
     if (i == 0) return 0;
@@ -154,4 +150,8 @@ void ComputerPlayer::setMove(Position position, int cellType) {
     _field[position.x][position.y] = cellType;
     lastMove = position;
     moves++;
+}
+
+ComputerPlayer::ComputerPlayer(int _type) : PlayerIOStream(_type) {
+    checkAlgorithm = WinningCheckAlgorithm();
 }

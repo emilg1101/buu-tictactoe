@@ -4,9 +4,9 @@
 #include "../PlayerIOStream.h"
 #include "../Display.h"
 
-class FirstPlayer : public PlayerIOStream {
+class Player : public PlayerIOStream {
 public:
-    FirstPlayer(Display *_display);
+    Player(Display *_display, int _type);
 
     Position getMove() override;
 

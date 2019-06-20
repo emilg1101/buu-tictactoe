@@ -14,9 +14,8 @@ const int FIRST_PLAYER_WIN = 0;
 const int SECOND_PLAYER_WIN = 1;
 const int DRAW = 2;
 
-const int WIN_COUNT = 3;
-
-const string MESSAGE_POSITION_FILLED = "position is already filled, choose another one!";
+const int FIELD_SIZE = 11;
+const int WIN_COUNT = 5;
 
 struct Position {
     Position(int x, int y) : x(x), y(y) {}
@@ -27,8 +26,6 @@ struct Position {
 struct Configuration {
 
     bool IS_MULTIPLAYER;
-
-    int FIELD_SIZE = 11;
 };
 
 class Field {
