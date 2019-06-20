@@ -58,7 +58,7 @@ int evaluate(Field field) {
 
 int minimax(Field field, int depth, bool isMax, int alpha, int beta) {
     int score = evaluate(field);
-    if (depth == 4)
+    if (depth == AI_DEPTH)
         return 0;
 
     if (score == 10) {

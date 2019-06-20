@@ -16,6 +16,8 @@ const int DRAW = 2;
 
 const int WIN_COUNT = 3;
 
+const int AI_DEPTH = 4;
+
 const string MESSAGE_POSITION_FILLED = "position is already filled, choose another one!";
 
 struct Position {
