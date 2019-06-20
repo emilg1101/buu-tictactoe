@@ -22,6 +22,8 @@ string secondPlayerName;
 
 bool isMultiPlayer;
 
+CommandHandler *handler;
+
 const char LEFT_TOP_EDGE = char(218);
 const char RIGHT_TOP_EDGE = char(191);
 const char LEFT_BOT_EDGE = char(192);
@@ -299,7 +301,9 @@ void ConsoleDisplay::showWinner(int type) {
     }
 }
 
-ConsoleDisplay::ConsoleDisplay() {}
+ConsoleDisplay::ConsoleDisplay(CommandHandler *_handler) {
+    handler = _handler;
+}
 
 ConsoleDisplay::~ConsoleDisplay() {}
 
@@ -366,4 +370,16 @@ Position ConsoleDisplay::getSecondPlayerMove() {
     int y = stoi(yStr);
     removeMessage();
     return Position(x, y);
+}
+
+bool ConsoleDisplay::loadSavedGame() {
+    return false;
+}
+
+void ConsoleDisplay::setFirstPlayerName(string name) {
+    firstPlayerName = name;
+}
+
+void ConsoleDisplay::setSecondPlayerName(string name) {
+    secondPlayerName = name;
 }

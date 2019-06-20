@@ -3,6 +3,7 @@
 
 #include <string>
 #include "PlayerIOStream.h"
+#include "CommandHandler.h"
 
 using namespace std;
 
@@ -23,6 +24,12 @@ public:
     virtual void showWrongMove() = 0;
 
     virtual void showWinner(int type) = 0;
+
+    virtual bool loadSavedGame() = 0;
+
+    virtual void setFirstPlayerName(string name) = 0;
+
+    virtual void setSecondPlayerName(string name) = 0;
 };
 
 #endif

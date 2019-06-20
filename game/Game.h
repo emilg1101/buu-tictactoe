@@ -3,10 +3,15 @@
 
 #include "PlayerIOStream.h"
 #include "Display.h"
+#include "storage/Saver.h"
 
 class Game {
 public:
-    Game(PlayerIOStream *_playerFirst, PlayerIOStream *_playerSecond, Display *_display);
+    Game(PlayerIOStream *_playerFirst, PlayerIOStream *_playerSecond, Display *_display, Saver *_saver);
+
+    void setField(Field _field);
+
+    void setLastPlayer(int _lastPlayer);
 
     void start();
 

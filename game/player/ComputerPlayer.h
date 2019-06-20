@@ -6,7 +6,7 @@
 
 class ComputerPlayer : public PlayerIOStream {
 public:
-    ComputerPlayer();
+    ComputerPlayer(int _type);
 
     Position getMove() override;
 
