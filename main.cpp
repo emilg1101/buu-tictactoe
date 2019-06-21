@@ -8,7 +8,7 @@
 #include <fstream>
 int main() {
     Saver *saver = new Saver();
-    saver->hasSavedGame();
+    bool a = saver->hasSavedGame();
 
     Display *display = new ConsoleDisplay();
     Configuration configuration = display->getConfiguration();

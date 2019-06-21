@@ -43,8 +43,8 @@ Save Saver::getSave() {
     save.field = savedField;
     save.firstPlayer = nameFirst;
     save.secondPlayer = nameSecond;
-    //save.lastMovePlayer = lastMovePlayer;
-    //save.isMultiplayer = ...
+    save.lastMovePlayer = std::stoi(lastMovePlayer);
+    save.isMultiplayer = isMultiPlayer;
 
     return save;
 }
