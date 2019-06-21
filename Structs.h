@@ -67,10 +67,7 @@ private:
     vector<vector<int>> dArray;
 };
 
-
 struct Save {
-    Save(const Field &field, int lastMovePlayer) : field(field), lastMovePlayer(lastMovePlayer) {}
-
     bool isMultiplayer;
     int lastMovePlayer;
     string firstPlayer;

@@ -16,11 +16,6 @@ string fileSecondPlayerName = "saveSecondPlayerName.txt";
 string fileLastMovePlayer = "saveLastMovePlayer.txt";
 string fileIsSaved = "saveIsSaved.txt";
 
-Saver::Saver(string _firstPlayer, string _secondPlayer) {
-    firstPlayerName = std::move(_firstPlayer);
-    secondPlayerName = std::move(_secondPlayer);
-}
-
 void Saver::setIsMultiPlayer(bool isMultiPlayer) {
     Saver::isMultiPlayer = isMultiPlayer;
 }
@@ -44,7 +39,14 @@ Save Saver::getSave() {
     string lastMovePlayer = readLineFromFile(fileLastMovePlayer);
     Field savedField = readField(fileField);
 
-    return Save(savedField, std::stoi(readLineFromFile(fileLastMovePlayer)));
+    Save save = Save();
+    save.field = savedField;
+    save.firstPlayer = nameFirst;
+    save.secondPlayer = nameSecond;
+    //save.lastMovePlayer = lastMovePlayer;
+    //save.isMultiplayer = ...
+
+    return save;
 }
 
 void Saver::newSave(Field field, int lastMovePlayer) {
@@ -131,4 +133,12 @@ Field Saver::readField(string fileName) {
     }
 
     return Field();
+}
+
+void Saver::setFirstPlayerName(string name) {
+    firstPlayerName = name;
+}
+
+void Saver::setSecondPlayerName(string name) {
+    secondPlayerName = name;
 }

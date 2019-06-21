@@ -7,7 +7,7 @@
 #include "game/storage/Saver.h"
 #include <fstream>
 int main() {
-    Saver *saver = new Saver("Player1", "Player2");
+    Saver *saver = new Saver();
     saver->hasSavedGame();
 
     Display *display = new ConsoleDisplay();

@@ -4,15 +4,8 @@
 #include "../../Structs.h"
 
 class Saver {
-private:
-    bool isMultiPlayer = false;
-
-    string readLineFromFile(string &fileName) const;
-
-    void write(string line, string &fileName) const;
-
 public:
-    Saver(string _firstPlayer, string _secondPlayer);
+    Saver() {};
 
     bool hasSavedGame();
 
@@ -22,11 +15,22 @@ public:
 
     void deleteSave();
 
+    void setFirstPlayerName(string name);
+
+    void setSecondPlayerName(string name);
+
     void setIsMultiPlayer(bool isMultiPlayer);
 
-    void saveField(const Field &field) const;
+private:
+    bool isMultiPlayer = false;
+
+    string readLineFromFile(string &fileName) const;
+
+    void write(string line, string &fileName) const;
 
     Field readField(string fileName);
+
+    void saveField(const Field &field) const;
 };
 
 #endif //BUU_TICTACTOE_SAVER_H
