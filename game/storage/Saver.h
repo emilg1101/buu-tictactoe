@@ -7,7 +7,7 @@ class Saver {
 private:
     bool isMultiPlayer = false;
 
-    string read(string &fileName) const;
+    string readLineFromFile(string &fileName) const;
 
     void write(string line, string &fileName) const;
 

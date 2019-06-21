@@ -11,9 +11,9 @@ string secondPlayerName;
 
 string fileIsMultiPlayer = "saveIsMultiPlayer.txt";
 string fileField = "saveField.txt";
-string fileLastMovePlayer = "saveLastMovePlayer.txt";
 string fileFirstPlayerName = "saveFirstPlayerName.txt";
 string fileSecondPlayerName = "saveSecondPlayerName.txt";
+string fileLastMovePlayer = "saveLastMovePlayer.txt";
 string fileIsSaved = "saveIsSaved.txt";
 
 Saver::Saver(string _firstPlayer, string _secondPlayer) {
@@ -27,9 +27,9 @@ void Saver::setIsMultiPlayer(bool isMultiPlayer) {
 
 bool Saver::hasSavedGame() {
     bool b;
-    string isMulti = read(fileIsMultiPlayer);
+    string isMulti = readLineFromFile(fileIsMultiPlayer);
 
-    if (isMulti != "") {
+    if (!isMulti.empty()) {
         b = static_cast<bool>(std::stoi(isMulti));
     } else {
         return 0;
@@ -39,11 +39,12 @@ bool Saver::hasSavedGame() {
 }
 
 Save Saver::getSave() {
-    string nameFirst = read(fileFirstPlayerName);
-    string lastMovePlayer = read(fileLastMovePlayer);
+    string nameFirst = readLineFromFile(fileFirstPlayerName);
+    string nameSecond = readLineFromFile(fileSecondPlayerName);
+    string lastMovePlayer = readLineFromFile(fileLastMovePlayer);
     Field savedField = readField(fileField);
-    cout << nameFirst;
-    return Save(savedField, std::stoi(read(fileLastMovePlayer)));
+
+    return Save(savedField, std::stoi(readLineFromFile(fileLastMovePlayer)));
 }
 
 void Saver::newSave(Field field, int lastMovePlayer) {
@@ -60,7 +61,7 @@ void Saver::newSave(Field field, int lastMovePlayer) {
 //  save field
     saveField(field);
 
-//  save first player' name()
+//  save first player' name
     write(firstPlayerName, fileFirstPlayerName);
 
 //  save second player' name
@@ -77,7 +78,7 @@ void Saver::saveField(const Field &field) const {
     write(toSave, fileField);
 }
 
-string Saver::read(string &fileName) const {
+string Saver::readLineFromFile(string &fileName) const {
     ifstream fin;
     string line;
 
@@ -99,11 +100,10 @@ string Saver::read(string &fileName) const {
 void Saver::write(string line, string &fileName) const {
     fstream file;
 
-    //opening file "sample.txt" in out(write) mode
     file.open(fileName, ios_base::trunc | ios_base::out | ios_base::in);
 
     if (!file) {
-        cout << "Error in creating file!!!";
+        cout << "Error in creating file";
     }
 
     file << line;
@@ -121,7 +121,6 @@ Field Saver::readField(string fileName) {
     Field field = Field(11);
 
     char my_character;
-    int number_of_lines = 0;
 
     for (int i = 0; i < 11; ++i) {
         for (int j = 0; j < 11; ++j) {
@@ -130,4 +129,6 @@ Field Saver::readField(string fileName) {
             field[i][j] = my_character;
         }
     }
+
+    return Field();
 }
