@@ -9,11 +9,12 @@ using namespace std;
 string firstPlayerName;
 string secondPlayerName;
 
-string fileIsMultiPlayer = "isMultiPlayer.txt";
-string fileField = "Field.txt";
-string fileLastMovePlayer = "lastMovePlayer.txt";
-string fileFirstPlayerName = "firstPlayerName.txt";
-string fileSecondPlayerName = "secondPlayerName.txt";
+string fileIsMultiPlayer = "saveIsMultiPlayer.txt";
+string fileField = "saveField.txt";
+string fileLastMovePlayer = "saveLastMovePlayer.txt";
+string fileFirstPlayerName = "saveFirstPlayerName.txt";
+string fileSecondPlayerName = "saveSecondPlayerName.txt";
+string fileIsSaved = "saveIsSaved.txt";
 
 Saver::Saver(string _firstPlayer, string _secondPlayer) {
     firstPlayerName = std::move(_firstPlayer);
@@ -25,17 +26,33 @@ void Saver::setIsMultiPlayer(bool isMultiPlayer) {
 }
 
 bool Saver::hasSavedGame() {
-    return false;
+    bool b;
+    string isMulti = read(fileIsMultiPlayer);
+
+    if (isMulti != "") {
+        b = static_cast<bool>(std::stoi(isMulti));
+    } else {
+        return 0;
+    }
+
+    return b;
 }
 
 Save Saver::getSave() {
-
-    return Save(Field(), 0);
+    string nameFirst = read(fileFirstPlayerName);
+    string lastMovePlayer = read(fileLastMovePlayer);
+    Field savedField = readField(fileField);
+    cout << nameFirst;
+    return Save(savedField, std::stoi(read(fileLastMovePlayer)));
 }
 
 void Saver::newSave(Field field, int lastMovePlayer) {
+
+//  mark that game is saved
+    write("1", fileIsSaved);
+
 //  save is multiplayer
-    write(std::to_string(isMultiPlayer), fileIsMultiPlayer);
+    write(std::to_string(lastMovePlayer), fileIsMultiPlayer);
 
 //  save last move player
     write(std::to_string(lastMovePlayer), fileLastMovePlayer);
@@ -54,33 +71,29 @@ void Saver::saveField(const Field &field) const {
     string toSave;
     for (int i = 0; i < field.size; ++i) {
         for (int j = 0; j < field.size; ++j) {
-            toSave += to_string(field[i][j]);
+            toSave += field[i][j];
         }
-        toSave += "\n";
     }
     write(toSave, fileField);
 }
 
-
-void Saver::read() const {
-    fstream fio;
+string Saver::read(string &fileName) const {
+    ifstream fin;
     string line;
 
-    // Execute a loop untill EOF (End of File)
-    // point read pointer at beginning of file
-    fio.seekg(0, ios::beg);
+    // by default open mode = ios::in mode
+    fin.open(fileName);
 
-    while (fio) {
-
+    // Execute a loop until EOF (End of File)
+    while (fin) {
         // Read a Line from File
-        getline(fio, line);
-
-        // Print line in Console
-        cout << line << endl;
+        getline(fin, line);
     }
 
     // Close the file
-    fio.close();
+    fin.close();
+
+    return line;
 }
 
 void Saver::write(string line, string &fileName) const {
@@ -90,14 +103,31 @@ void Saver::write(string line, string &fileName) const {
     file.open(fileName, ios_base::trunc | ios_base::out | ios_base::in);
 
     if (!file) {
-        cout << "Error in creating file!!!" << endl;
+        cout << "Error in creating file!!!";
     }
 
     file << line;
+
+    file.close();
 }
 
 void Saver::deleteSave() {
-    string emptyString;
-    string fileName = "save.txt";
-    write(emptyString, fileName);
+    write("0", fileIsSaved);
+}
+
+Field Saver::readField(string fileName) {
+    ifstream fin;
+    fin.open(fileName, ios::in);
+    Field field = Field(11);
+
+    char my_character;
+    int number_of_lines = 0;
+
+    for (int i = 0; i < 11; ++i) {
+        for (int j = 0; j < 11; ++j) {
+            fin.get(my_character);
+            cout << my_character;
+            field[i][j] = my_character;
+        }
+    }
 }
