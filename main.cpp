@@ -63,6 +63,7 @@ public:
             secondPlayer = new ComputerPlayer(CIRCLE_CELL_CODE);
         }
 
+        saver->setIsMultiPlayer(configuration.IS_MULTIPLAYER);
         game = new Game(firstPlayer, secondPlayer, display, saver);
         game->start();
     }

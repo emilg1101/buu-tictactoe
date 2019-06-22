@@ -21,30 +21,28 @@ void Saver::setIsMultiPlayer(bool isMultiPlayer) {
 }
 
 bool Saver::hasSavedGame() {
-    bool b;
-    string isMulti = readLineFromFile(fileIsMultiPlayer);
+    string isMulti = readLineFromFile(fileIsSaved);
 
     if (!isMulti.empty()) {
-        b = static_cast<bool>(std::stoi(isMulti));
+        return static_cast<bool>(std::stoi(isMulti));
     } else {
-        return 0;
+        return false;
     }
-
-    return b;
 }
 
 Save Saver::getSave() {
     string nameFirst = readLineFromFile(fileFirstPlayerName);
     string nameSecond = readLineFromFile(fileSecondPlayerName);
     string lastMovePlayer = readLineFromFile(fileLastMovePlayer);
-    Field savedField = readField(fileField);
+    string isMultiPlayer = readLineFromFile(fileIsMultiPlayer);
+    Field savedField = readField();
 
     Save save = Save();
     save.field = savedField;
     save.firstPlayer = nameFirst;
     save.secondPlayer = nameSecond;
     save.lastMovePlayer = std::stoi(lastMovePlayer);
-    save.isMultiplayer = isMultiPlayer;
+    save.isMultiplayer = std::stoi(isMultiPlayer);
 
     return save;
 }
@@ -55,7 +53,7 @@ void Saver::newSave(Field field, int lastMovePlayer) {
     write("1", fileIsSaved);
 
 //  save is multiplayer
-    write(std::to_string(lastMovePlayer), fileIsMultiPlayer);
+    write(std::to_string(isMultiPlayer), fileIsMultiPlayer);
 
 //  save last move player
     write(std::to_string(lastMovePlayer), fileLastMovePlayer);
@@ -117,9 +115,9 @@ void Saver::deleteSave() {
     write("0", fileIsSaved);
 }
 
-Field Saver::readField(string fileName) {
+Field Saver::readField() const {
     ifstream fin;
-    fin.open(fileName, ios::in);
+    fin.open(fileField, ios::in);
     Field field = Field(11);
 
     char my_character;
@@ -132,7 +130,7 @@ Field Saver::readField(string fileName) {
         }
     }
 
-    return Field();
+    return field;
 }
 
 void Saver::setFirstPlayerName(string name) {

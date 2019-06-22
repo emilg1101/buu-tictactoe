@@ -28,7 +28,7 @@ private:
 
     void write(string line, string &fileName) const;
 
-    Field readField(string fileName);
+    Field readField() const;
 
     void saveField(const Field &field) const;
 };

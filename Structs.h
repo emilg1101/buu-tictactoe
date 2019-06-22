@@ -65,7 +65,7 @@ private:
 };
 
 struct Save {
-    bool isMultiplayer;
+    int isMultiplayer;
     int lastMovePlayer;
     string firstPlayer;
     string secondPlayer;
