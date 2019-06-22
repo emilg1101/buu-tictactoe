@@ -60,6 +60,7 @@ bool Game::makeMove(int playerType, PlayerIOStream *player) {
 
     display->drawField(field);
     playerSecond->setMove(position, playerType);
+    saver->newSave(field, playerType);
     return checkWin(field, playerType, position);
 }
 
