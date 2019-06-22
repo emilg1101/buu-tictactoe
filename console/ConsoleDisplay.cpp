@@ -173,12 +173,22 @@ void cleanConsoleNoWorkingSpace() {
     moveToStartCoord();
 }
 
-void showWrongMoveMessage() {
+void cleanConsoleWholeVisibleSpace() {
+    destCoord.X = 0;
+    for (int i = 0; i < CONSOLE_WORKING_HEIGHT; i++) {
+        destCoord.Y = i;
+        SetConsoleCursorPosition(hStdout, destCoord);
+        removeLineFromCurrentCoord();
+    }
+    moveToStartCoord();
+}
+
+void showMessage(string message) {
     cleanConsoleNoWorkingSpace();
     moveToMessageStartCoord();
     removeLineFromCurrentCoord();
     moveToMessageStartCoord();
-    cout << "Wrong input!" << endl;
+    cout << message << endl;
 }
 
 bool isInputPositionRight(string xStr, string yStr) {
@@ -284,8 +294,18 @@ void tableDraw(Field field) {
     }
 }
 
+bool isInputEndGame(string str1, string str2){
+    return ((str1.compare("End") == 0 | str1.compare("end") == 0) &
+            (str2.compare("Game") == 0 | str2.compare("game") == 0));
+}
+
+bool isInputNewGame(string str1, string str2){
+    return ((str1.compare("New") == 0 | str1.compare("new") == 0) &
+            (str2.compare("Game") == 0 | str2.compare("game") == 0));
+}
+
 void ConsoleDisplay::showWrongMove() {
-    showWrongMoveMessage();
+    showMessage("Wrong move!");
 }
 
 void ConsoleDisplay::showWinner(int type) {
@@ -308,6 +328,7 @@ ConsoleDisplay::ConsoleDisplay(CommandHandler *_handler) {
 ConsoleDisplay::~ConsoleDisplay() {}
 
 Configuration ConsoleDisplay::getConfiguration() {
+    cleanConsoleWholeVisibleSpace();
     askIsMultiPlayer();
     if (isMultiPlayer) {
         askTwoUsersName();
@@ -315,7 +336,7 @@ Configuration ConsoleDisplay::getConfiguration() {
         askOneUserName();
     }
     Configuration configuration = Configuration();
-    configuration.IS_MULTIPLAYER = true;
+    configuration.IS_MULTIPLAYER = isMultiPlayer;
     return configuration;
 }
 
@@ -335,8 +356,14 @@ Position ConsoleDisplay::getFirstPlayerMove() {
     cout << "<" << firstPlayerName << ">enter position: ";
     string xStr, yStr;
     cin >> xStr >> yStr;
+    if(isInputPositionRight(xStr, yStr)){
+        handler->exit();
+    }
+    if(isInputNewGame(xStr, yStr)){
+        handler->newGame();
+    }
     while (!isInputPositionRight(xStr, yStr)) {
-        showWrongMoveMessage();
+        showWrongMove();
         moveToPlayerInputStartCoord();
         removeLineFromCurrentCoord();
         moveToPlayerInputStartCoord();
@@ -357,8 +384,14 @@ Position ConsoleDisplay::getSecondPlayerMove() {
     cout << "<" << secondPlayerName << ">enter position: ";
     string xStr, yStr;
     cin >> xStr >> yStr;
+    if(isInputPositionRight(xStr, yStr)){
+        handler->exit();
+    }
+    if(isInputNewGame(xStr, yStr)){
+        handler->newGame();
+    }
     while (!isInputPositionRight(xStr, yStr)) {
-        showWrongMoveMessage();
+        showWrongMove();
         moveToPlayerInputStartCoord();
         removeLineFromCurrentCoord();
         moveToPlayerInputStartCoord();
@@ -373,7 +406,27 @@ Position ConsoleDisplay::getSecondPlayerMove() {
 }
 
 bool ConsoleDisplay::loadSavedGame() {
-    return false;
+    string mp;
+    bool answer;
+    moveToSecondLineStartCoord();
+    removeLineFromCurrentCoord();
+    cout << "You have saved game. Continue?[Y/N]: ";
+    cin >> mp;
+    if (mp.compare("Y") == 0) {
+        answer = true;
+    } else if (mp.compare("N") == 0) {
+        answer = false;
+    } else {
+        moveToStartCoord();
+        cout << "Write only \"Y\" or \"N\" please";
+        answer = loadSavedGame();
+    }
+    moveToStartCoord();
+    removeLineFromCurrentCoord();
+    moveToSecondLineStartCoord();
+    removeLineFromCurrentCoord();
+    moveToStartCoord();
+    return answer;
 }
 
 void ConsoleDisplay::setFirstPlayerName(string name) {
