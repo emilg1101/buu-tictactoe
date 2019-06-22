@@ -26,6 +26,10 @@ public:
     void setFirstPlayerName(string name) override;
 
     void setSecondPlayerName(string name) override;
+
+    string getFirstPlayerName() override;
+
+    string getSecondPlayerName() override;
 };
 
 #endif

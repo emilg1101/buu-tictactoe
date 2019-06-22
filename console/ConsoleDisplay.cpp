@@ -383,3 +383,11 @@ void ConsoleDisplay::setFirstPlayerName(string name) {
 void ConsoleDisplay::setSecondPlayerName(string name) {
     secondPlayerName = name;
 }
+
+string ConsoleDisplay::getFirstPlayerName() {
+    return firstPlayerName;
+}
+
+string ConsoleDisplay::getSecondPlayerName() {
+    return secondPlayerName;
+}

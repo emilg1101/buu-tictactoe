@@ -6,8 +6,8 @@
 
 using namespace std;
 
-extern string firstPlayerName;
-extern string secondPlayerName;
+string _firstPlayerName;
+string _secondPlayerName;
 
 string fileIsMultiPlayer = "saveIsMultiPlayer.txt";
 string fileField = "saveField.txt";
@@ -62,10 +62,10 @@ void Saver::newSave(Field field, int lastMovePlayer) {
     saveField(field);
 
 //  save first player' name
-    write(firstPlayerName, fileFirstPlayerName);
+    write(_firstPlayerName, fileFirstPlayerName);
 
 //  save second player' name
-    write(secondPlayerName, fileSecondPlayerName);
+    write(_secondPlayerName, fileSecondPlayerName);
 }
 
 void Saver::saveField(const Field &field) const {
@@ -134,9 +134,9 @@ Field Saver::readField() const {
 }
 
 void Saver::setFirstPlayerName(string name) {
-    firstPlayerName = name;
+    _firstPlayerName = name;
 }
 
 void Saver::setSecondPlayerName(string name) {
-    secondPlayerName = name;
+    _secondPlayerName = name;
 }

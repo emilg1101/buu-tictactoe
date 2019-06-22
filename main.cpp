@@ -63,6 +63,8 @@ public:
             secondPlayer = new ComputerPlayer(CIRCLE_CELL_CODE);
         }
 
+        saver->setFirstPlayerName(display->getFirstPlayerName());
+        saver->setSecondPlayerName(display->getSecondPlayerName());
         saver->setIsMultiPlayer(configuration.IS_MULTIPLAYER);
         game = new Game(firstPlayer, secondPlayer, display, saver);
         game->start();
