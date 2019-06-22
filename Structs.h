@@ -14,6 +14,8 @@ const int FIRST_PLAYER_WIN = 0;
 const int SECOND_PLAYER_WIN = 1;
 const int DRAW = 2;
 
+const int AI_DEPTH = 4;
+
 const int FIELD_SIZE = 11;
 const int WIN_COUNT = 5;
 
@@ -64,12 +66,12 @@ private:
     vector<vector<int>> dArray;
 };
 
-
 struct Save {
-    Save(const Field &field, int lastMovePlayer) : field(field), lastMovePlayer(lastMovePlayer) {}
-
-    Field field;
+    int isMultiplayer;
     int lastMovePlayer;
+    string firstPlayer;
+    string secondPlayer;
+    Field field;
 };
 
 #endif

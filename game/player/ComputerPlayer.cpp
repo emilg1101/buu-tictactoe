@@ -14,15 +14,15 @@ int moves = 0;
 Position lastMove = Position(-1, -1);
 
 int start(int i) {
-    if (i == 0) return 0;
-    if (i == _field.getSize() - 1) return i - 2;
-    return i - 1;
+    if (i == 0 || i == 1) return 0;
+    if (i == _field.getSize() - 1 || i == _field.getSize() - 2) return i - 3;
+    return i - 2;
 }
 
 int end(int i) {
-    if (i == 0) return 2;
-    if (i == _field.getSize() - 1) return i;
-    return i + 1;
+    if (i == 0) return 3;
+    if (i == _field.getSize() - 1 && i == _field.getSize() - 2) return _field.getSize() - 1;
+    return i + 2;
 }
 
 bool checkWin(Field field, int type, Position pos) {
@@ -54,7 +54,7 @@ int evaluate(Field field) {
 
 int minimax(Field field, int depth, bool isMax, int alpha, int beta) {
     int score = evaluate(field);
-    if (depth == 7)
+    if (depth == AI_DEPTH)
         return 0;
 
     if (score == 10) {

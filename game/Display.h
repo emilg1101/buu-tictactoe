@@ -30,6 +30,10 @@ public:
     virtual void setFirstPlayerName(string name) = 0;
 
     virtual void setSecondPlayerName(string name) = 0;
+
+    virtual string getFirstPlayerName() = 0;
+
+    virtual string getSecondPlayerName() = 0;
 };
 
 #endif
