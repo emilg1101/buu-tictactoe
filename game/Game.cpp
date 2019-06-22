@@ -3,24 +3,22 @@
 
 PlayerIOStream *playerFirst;
 PlayerIOStream *playerSecond;
-
-const int size = 11;
-
 Display *display;
+Saver *saver;
 
 Field field;
 
 WinningCheckAlgorithm checkAlgorithm;
 
-Saver *saver;
+int lastPlayer = CIRCLE_CELL_CODE;
 
 Game::Game(PlayerIOStream *_playerFirst, PlayerIOStream *_playerSecond, Display *_display, Saver *_saver) {
     playerFirst = _playerFirst;
     playerSecond = _playerSecond;
     display = _display;
-    field = Field(size);
-    checkAlgorithm = WinningCheckAlgorithm();
     saver = _saver;
+    field = Field(FIELD_SIZE);
+    checkAlgorithm = WinningCheckAlgorithm();
 }
 
 void Game::start() {
@@ -28,16 +26,20 @@ void Game::start() {
 
     bool end;
     while (true) {
-        end = makeMove(CROSS_CELL_CODE, playerFirst);
-        if (end) {
-            display->showWinner(CROSS_CELL_CODE);
-            return;
-        }
-
-        end = makeMove(CIRCLE_CELL_CODE, playerSecond);
-        if (end) {
-            display->showWinner(CIRCLE_CELL_CODE);
-            return;
+        if (lastPlayer == CIRCLE_CELL_CODE) {
+            end = makeMove(CROSS_CELL_CODE, playerFirst);
+            if (end) {
+                display->showWinner(CROSS_CELL_CODE);
+                return;
+            }
+            lastPlayer = CROSS_CELL_CODE;
+        } else {
+            end = makeMove(CIRCLE_CELL_CODE, playerSecond);
+            if (end) {
+                display->showWinner(CIRCLE_CELL_CODE);
+                return;
+            }
+            lastPlayer = CIRCLE_CELL_CODE;
         }
     }
 }
@@ -57,6 +59,7 @@ bool Game::makeMove(int playerType, PlayerIOStream *player) {
     fillField(position, playerType);
 
     display->drawField(field);
+    playerSecond->setMove(position, playerType);
     return checkWin(field, playerType, position);
 }
 
@@ -66,4 +69,12 @@ void Game::fillField(Position position, const int code) {
 
 bool Game::checkWin(Field field, int type, Position newPosition) {
     return checkAlgorithm.checkWin(field, type, newPosition);
+}
+
+void Game::setField(Field _field) {
+    field = _field;
+}
+
+void Game::setLastPlayer(int _lastPlayer) {
+    lastPlayer = _lastPlayer;
 }

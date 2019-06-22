@@ -5,13 +5,17 @@
 
 class PlayerIOStream {
 public:
-    PlayerIOStream() {};
+    int type;
 
-    ~PlayerIOStream() {};
+    PlayerIOStream(int _type) {
+        type = _type;
+    }
+
+    ~PlayerIOStream() {}
 
     virtual Position getMove() = 0;
 
-    virtual void setMove(Position position) = 0;
+    virtual void setMove(Position position, int cellType) = 0;
 };
 
 #endif

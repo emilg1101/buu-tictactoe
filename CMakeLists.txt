@@ -3,4 +3,4 @@ project(buu_tictactoe)
 
 set(CMAKE_CXX_STANDARD 14)
 
-add_executable(buu_tictactoe main.cpp game/Display.h game/PlayerIOStream.h Structs.h console/ConsoleDisplay.cpp console/ConsoleDisplay.h game/Game.cpp game/Game.h game/player/FirstPlayer.cpp game/player/FirstPlayer.h game/player/SecondPlayer.cpp game/player/SecondPlayer.h game/player/ComputerPlayer.cpp game/player/ComputerPlayer.h game/storage/Saver.cpp game/storage/Saver.h game/algorithm/WinningCheckAlgorithm.cpp game/algorithm/WinningCheckAlgorithm.h)
+add_executable(buu_tictactoe main.cpp game/Display.h game/PlayerIOStream.h Structs.h console/ConsoleDisplay.cpp console/ConsoleDisplay.h game/Game.cpp game/Game.h game/player/Player.cpp game/player/Player.h game/player/ComputerPlayer.cpp game/player/ComputerPlayer.h game/storage/Saver.cpp game/storage/Saver.h game/algorithm/WinningCheckAlgorithm.cpp game/algorithm/WinningCheckAlgorithm.h game/CommandHandler.h)

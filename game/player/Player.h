@@ -4,13 +4,13 @@
 #include "../PlayerIOStream.h"
 #include "../Display.h"
 
-class FirstPlayer : public PlayerIOStream {
+class Player : public PlayerIOStream {
 public:
-    FirstPlayer(Display *_display);
+    Player(Display *_display, int _type);
 
     Position getMove() override;
 
-    void setMove(Position position) override;
+    void setMove(Position position, int cellType) override;
 };
 
 #endif //BUU_TICTACTOE_FIRSTPLAYER_H
