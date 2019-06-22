@@ -6,11 +6,11 @@
 
 class ComputerPlayer : public PlayerIOStream {
 public:
-    ComputerPlayer();
+    ComputerPlayer(int _type);
 
     Position getMove() override;
 
-    void setMove(Position position) override;
+    void setMove(Position position, int cellType) override;
 };
 
 #endif //BUU_TICTACTOE_COMPUTERPLAYER_H

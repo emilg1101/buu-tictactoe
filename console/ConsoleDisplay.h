@@ -5,7 +5,7 @@
 
 class ConsoleDisplay : public Display {
 public:
-    ConsoleDisplay();
+    ConsoleDisplay(CommandHandler *_handler);
 
     virtual ~ConsoleDisplay();
 
@@ -20,6 +20,12 @@ public:
     void showWrongMove() override;
 
     void showWinner(int type) override;
+
+    bool loadSavedGame() override;
+
+    void setFirstPlayerName(string name) override;
+
+    void setSecondPlayerName(string name) override;
 };
 
 #endif
