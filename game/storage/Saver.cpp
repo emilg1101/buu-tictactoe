@@ -6,8 +6,8 @@
 
 using namespace std;
 
-string firstPlayerName;
-string secondPlayerName;
+extern string firstPlayerName;
+extern string secondPlayerName;
 
 string fileIsMultiPlayer = "saveIsMultiPlayer.txt";
 string fileField = "saveField.txt";

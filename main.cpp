@@ -26,11 +26,12 @@ public:
     }
 
     void loadGame() {
-
-        Field field = Field(11);
-        field[0][0] = CROSS_CELL_CODE;
-        field[1][1] = CIRCLE_CELL_CODE;
-        bool isMultiplayer = false;
+        Save save = saver->getSave();
+        Field field = save.field;
+        bool isMultiplayer = save.isMultiplayer;
+        int lastMove = save.lastMovePlayer;
+        string firstPlayerName = save.firstPlayer;
+        string secondPlayerName = save.secondPlayer;
 
         PlayerIOStream *firstPlayer = new Player(display, CROSS_CELL_CODE);
         PlayerIOStream *secondPlayer;
@@ -41,12 +42,12 @@ public:
             secondPlayer = new ComputerPlayer(CIRCLE_CELL_CODE);
         }
 
-        display->setFirstPlayerName("player1");
-        display->setSecondPlayerName("player2");
+        display->setFirstPlayerName(firstPlayerName);
+        display->setSecondPlayerName(secondPlayerName);
 
         game = new Game(firstPlayer, secondPlayer, display, saver);
         game->setField(field);
-        game->setLastPlayer(CIRCLE_CELL_CODE);
+        game->setLastPlayer(lastMove);
         game->start();
     }
 

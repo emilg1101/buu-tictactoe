@@ -373,7 +373,7 @@ Position ConsoleDisplay::getSecondPlayerMove() {
 }
 
 bool ConsoleDisplay::loadSavedGame() {
-    return false;
+    return true;
 }
 
 void ConsoleDisplay::setFirstPlayerName(string name) {
