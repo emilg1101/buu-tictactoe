@@ -5,6 +5,7 @@
 #include "game/player/ComputerPlayer.h"
 #include "game/storage/Saver.h"
 #include "game/CommandHandler.h"
+#include "gui/GraphicalDisplay.h"
 
 class GameController : public CommandHandler {
 public:
@@ -13,7 +14,6 @@ public:
     Saver *saver;
 
     GameController() {
-//        display = new GraphicalDisplay(this);
         display = new ConsoleDisplay(this);
         saver = new Saver();
     }
