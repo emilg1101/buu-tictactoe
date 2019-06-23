@@ -71,15 +71,6 @@ public:
         game->start();
     }
 
-    void back() override {
-        Save save = saver->getSave();
-        if (save.isMultiplayer) {
-            cout << "\nnot allowed in multiplayer mode\n";
-        } else {
-            game->moveBack();
-        }
-    }
-
     void exit() override {
         cout << "exit()" << endl;
     }
