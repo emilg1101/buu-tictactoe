@@ -67,6 +67,7 @@ public:
         saver->setSecondPlayerName(display->getSecondPlayerName());
         saver->setIsMultiPlayer(configuration.IS_MULTIPLAYER);
         game = new Game(firstPlayer, secondPlayer, display, saver);
+        game->setLastPlayer(CIRCLE_CELL_CODE);
         game->start();
     }
 

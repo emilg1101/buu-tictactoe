@@ -14,14 +14,14 @@ int moves = 0;
 Position lastMove = Position(-1, -1);
 
 int start(int i) {
-    if (i == 0 || i == 1) return 0;
+    if (i == 0 || i == 1 || i < 0) return 0;
     if (i == _field.getSize() - 1 || i == _field.getSize() - 2) return i - 3;
     return i - 2;
 }
 
 int end(int i) {
     if (i == 0) return 3;
-    if (i == _field.getSize() - 1 && i == _field.getSize() - 2) return _field.getSize() - 1;
+    if (i == _field.getSize() - 1 || i == _field.getSize() - 2) return _field.getSize() - 1;
     return i + 2;
 }
 
