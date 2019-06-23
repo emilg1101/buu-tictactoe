@@ -5,6 +5,7 @@
 #include "game/player/ComputerPlayer.h"
 #include "game/storage/Saver.h"
 #include "game/CommandHandler.h"
+#include "gui/GraphicalDisplay.h"
 
 class GameController : public CommandHandler {
 public:
@@ -13,8 +14,7 @@ public:
     Saver *saver;
 
     GameController() {
-//        display = new GraphicalDisplay(this);
-        display = new ConsoleDisplay(this);
+        display = new GraphicalDisplay(this);
         saver = new Saver();
     }
 
@@ -69,15 +69,6 @@ public:
         saver->setIsMultiPlayer(configuration.IS_MULTIPLAYER);
         game = new Game(firstPlayer, secondPlayer, display, saver);
         game->start();
-    }
-
-    void back() override {
-        Save save = saver->getSave();
-        if (save.isMultiplayer) {
-            cout << "\nnot allowed in multiplayer mode\n";
-        } else {
-            game->moveBack();
-        }
     }
 
     void exit() override {

@@ -20,8 +20,6 @@ public:
     bool checkWin(Field field, int type, Position newPosition);
 
     bool makeMove(int playerType, PlayerIOStream *player);
-
-    void moveBack();
 };
 
 #endif
