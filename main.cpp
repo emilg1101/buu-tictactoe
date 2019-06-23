@@ -14,7 +14,13 @@ public:
     Saver *saver;
 
     GameController() {
-        display = new ConsoleDisplay(this);
+        int a;
+        cin >> a;
+        if (a % 2 == 0) {
+            display = new GraphicalDisplay(this);
+        } else {
+            display = new ConsoleDisplay(this);
+        }
         saver = new Saver();
     }
 
@@ -68,8 +74,18 @@ public:
         saver->setSecondPlayerName(display->getSecondPlayerName());
         saver->setIsMultiPlayer(configuration.IS_MULTIPLAYER);
         game = new Game(firstPlayer, secondPlayer, display, saver);
+        game->setField(Field(FIELD_SIZE));
         game->setLastPlayer(CIRCLE_CELL_CODE);
         game->start();
+    }
+
+    void back() override {
+        Save save = saver->getSave();
+        if (save.isMultiplayer) {
+            cout << "\nnot allowed in multiplayer mode\n";
+        } else {
+            game->moveBack();
+        }
     }
 
     void exit() override {

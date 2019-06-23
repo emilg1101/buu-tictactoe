@@ -1,10 +1,12 @@
 #include "Game.h"
 #include "algorithm/WinningCheckAlgorithm.h"
+#include <stack>
 
 PlayerIOStream *playerFirst;
 PlayerIOStream *playerSecond;
 Display *display;
 Saver *saver;
+stack<Position> stackMove;
 
 Field field;
 
@@ -17,7 +19,6 @@ Game::Game(PlayerIOStream *_playerFirst, PlayerIOStream *_playerSecond, Display 
     playerSecond = _playerSecond;
     display = _display;
     saver = _saver;
-    field = Field(FIELD_SIZE);
     checkAlgorithm = WinningCheckAlgorithm();
 }
 
@@ -56,12 +57,29 @@ Position checkPosition(Position position, PlayerIOStream *player) {
 bool Game::makeMove(int playerType, PlayerIOStream *player) {
     const Position &getMove = player->getMove();
     Position position = checkPosition(getMove, player);
+    stackMove.push(position);
     fillField(position, playerType);
 
     display->drawField(field);
     playerSecond->setMove(position, playerType);
     saver->newSave(field, playerType);
     return checkWin(field, playerType, position);
+}
+
+void Game::moveBack() {
+
+    if (!stackMove.empty()) {
+        Position &lastMove = stackMove.top();
+        playerSecond->setMove(lastMove, BLANK_CELL_CODE);
+        field[lastMove.x][lastMove.y] = 0;
+        stackMove.pop();
+
+        Position &prevMove = stackMove.top();
+        playerSecond->setMove(lastMove, BLANK_CELL_CODE);
+        field[prevMove.x][prevMove.y] = 0;
+        stackMove.pop();
+        display->drawField(field);
+    }
 }
 
 void Game::fillField(Position position, const int code) {
@@ -74,6 +92,13 @@ bool Game::checkWin(Field field, int type, Position newPosition) {
 
 void Game::setField(Field _field) {
     field = _field;
+    for (int i = 0; i < field.getSize(); i++) {
+        for (int j = 0; j < field.getSize(); j++) {
+            if (field[i][j] != BLANK_CELL_CODE) {
+                playerSecond->setMove(Position(i, j), field[i][j]);
+            }
+        }
+    }
 }
 
 void Game::setLastPlayer(int _lastPlayer) {

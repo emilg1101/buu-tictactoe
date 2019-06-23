@@ -294,12 +294,12 @@ void tableDraw(Field field) {
     }
 }
 
-bool isInputEndGame(string str1, string str2){
+bool isInputEndGame(string str1, string str2) {
     return ((str1.compare("End") == 0 | str1.compare("end") == 0) &
             (str2.compare("Game") == 0 | str2.compare("game") == 0));
 }
 
-bool isInputNewGame(string str1, string str2){
+bool isInputNewGame(string str1, string str2) {
     return ((str1.compare("New") == 0 | str1.compare("new") == 0) &
             (str2.compare("Game") == 0 | str2.compare("game") == 0));
 }
@@ -315,7 +315,7 @@ void ConsoleDisplay::showWinner(int type) {
     if (type == 0) {
         cout << secondPlayerName << " win";
     } else if (type == 1) {
-        cout << firstPlayerName<< " win";
+        cout << firstPlayerName << " win";
     } else {
         cout << "Draw";
     }
@@ -349,60 +349,66 @@ void ConsoleDisplay::drawField(Field field) {
     tableDraw(field);
 }
 
+bool isInputBack(string str1, string str2) {
+    return ((str1.compare("Prev") == 0 | str1 == "prev") &
+            (str2.compare("Step") == 0 | str2 == "step"));
+}
+
 Position ConsoleDisplay::getFirstPlayerMove() {
-    moveToPlayerInputStartCoord();
-    removeLineFromCurrentCoord();
-    moveToPlayerInputStartCoord();
     cout << "<" << firstPlayerName << ">enter position: ";
     string xStr, yStr;
     cin >> xStr >> yStr;
-    if(isInputPositionRight(xStr, yStr)){
+    if (isInputEndGame(xStr, yStr)) {
         handler->exit();
+        return Position(-1, -1);
     }
-    if(isInputNewGame(xStr, yStr)){
+
+    if (isInputNewGame(xStr, yStr)) {
         handler->newGame();
     }
-    while (!isInputPositionRight(xStr, yStr)) {
-        showWrongMove();
-        moveToPlayerInputStartCoord();
-        removeLineFromCurrentCoord();
-        moveToPlayerInputStartCoord();
-        cout << "<" << firstPlayerName << ">enter position: ";
-        cin >> xStr >> yStr;
+
+    if (isInputBack(xStr, yStr)) {
+        handler->back();
+        return getFirstPlayerMove();
     }
-    setNormalizePoint(&xStr, &yStr);
-    int x = stoi(xStr);
-    int y = stoi(yStr);
-    removeMessage();
-    return Position(x, y);
+// wrong input
+    if (!isInputPositionRight(xStr, yStr) && !isInputBack(xStr, yStr)) {
+        showWrongMove();
+        return getFirstPlayerMove();
+    } else {
+        setNormalizePoint(&xStr, &yStr);
+        int x = stoi(xStr);
+        int y = stoi(yStr);
+        return Position(x, y);
+    }
 }
 
 Position ConsoleDisplay::getSecondPlayerMove() {
-    moveToPlayerInputStartCoord();
-    removeLineFromCurrentCoord();
-    moveToPlayerInputStartCoord();
     cout << "<" << secondPlayerName << ">enter position: ";
     string xStr, yStr;
     cin >> xStr >> yStr;
-    if(isInputPositionRight(xStr, yStr)){
+    if (isInputEndGame(xStr, yStr)) {
         handler->exit();
     }
-    if(isInputNewGame(xStr, yStr)){
+
+    if (isInputNewGame(xStr, yStr)) {
         handler->newGame();
     }
-    while (!isInputPositionRight(xStr, yStr)) {
-        showWrongMove();
-        moveToPlayerInputStartCoord();
-        removeLineFromCurrentCoord();
-        moveToPlayerInputStartCoord();
-        cout << "<" << firstPlayerName << ">enter position: ";
-        cin >> xStr >> yStr;
+
+    if (isInputBack(xStr, yStr)) {
+        handler->back();
+        return getSecondPlayerMove();
     }
-    setNormalizePoint(&xStr, &yStr);
-    int x = stoi(xStr);
-    int y = stoi(yStr);
-    removeMessage();
-    return Position(x, y);
+// wrong input
+    if (!isInputPositionRight(xStr, yStr) && !isInputBack(xStr, yStr)) {
+        showWrongMove();
+        getSecondPlayerMove();
+    } else {
+        setNormalizePoint(&xStr, &yStr);
+        int x = stoi(xStr);
+        int y = stoi(yStr);
+        return Position(x, y);
+    }
 }
 
 bool ConsoleDisplay::loadSavedGame() {

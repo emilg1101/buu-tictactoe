@@ -6,7 +6,7 @@ struct Move {
     int row, col;
 };
 
-extern Field _field = Field(FIELD_SIZE);
+Field _fieldAI;
 
 extern WinningCheckAlgorithm checkAlgorithm;
 
@@ -15,13 +15,13 @@ Position lastMove = Position(-1, -1);
 
 int start(int i) {
     if (i == 0 || i == 1 || i < 0) return 0;
-    if (i == _field.getSize() - 1 || i == _field.getSize() - 2) return i - 3;
+    if (i == _fieldAI.getSize() - 1 || i == _fieldAI.getSize() - 2) return i - 3;
     return i - 2;
 }
 
 int end(int i) {
     if (i == 0) return 3;
-    if (i == _field.getSize() - 1 || i == _field.getSize() - 2) return _field.getSize() - 1;
+    if (i == _fieldAI.getSize() - 1 || i == _fieldAI.getSize() - 2) return _fieldAI.getSize() - 1;
     return i + 2;
 }
 
@@ -30,7 +30,7 @@ bool checkWin(Field field, int type, Position pos) {
 }
 
 bool isMovesLeft(Field field) {
-    return moves < _field.getSize() * _field.getSize();
+    return moves < _fieldAI.getSize() * _fieldAI.getSize();
 }
 
 int evaluate(Field field) {
@@ -138,8 +138,8 @@ Move findBestMove(Field field) {
 }
 
 Position ComputerPlayer::getMove() {
-    Move bestMove = findBestMove(_field);
-    _field[bestMove.row][bestMove.col] = CIRCLE_CELL_CODE;
+    Move bestMove = findBestMove(_fieldAI);
+    _fieldAI[bestMove.row][bestMove.col] = CIRCLE_CELL_CODE;
     moves++;
     Position position = Position(bestMove.row, bestMove.col);
     lastMove = position;
@@ -147,11 +147,14 @@ Position ComputerPlayer::getMove() {
 }
 
 void ComputerPlayer::setMove(Position position, int cellType) {
-    _field[position.x][position.y] = cellType;
-    lastMove = position;
-    moves++;
+    _fieldAI[position.x][position.y] = cellType;
+    if (cellType !=  BLANK_CELL_CODE) {
+        lastMove = position;
+        moves++;
+    }
 }
 
 ComputerPlayer::ComputerPlayer(int _type) : PlayerIOStream(_type) {
     checkAlgorithm = WinningCheckAlgorithm();
+    _fieldAI = Field(FIELD_SIZE);
 }

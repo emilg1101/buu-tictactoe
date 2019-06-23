@@ -58,6 +58,13 @@ protected:
             target.draw(line, states);
         }
 
+        for (int i = 0; i < 11; i++) {
+            for (int j = 0; j < 11; j++) {
+                std::cout << field[i][j] << " ";
+            }
+            std::cout << std::endl;
+        }
+
         for (int i = 0; i < field.getSize(); i++) {
             for (int j = 0; j < field.getSize(); j++) {
                 text.setFillColor(color);
@@ -96,6 +103,9 @@ Position listen() {
                 case sf::Event::KeyPressed:
                     if (event.key.code == sf::Keyboard::F2) {
                         handler->newGame();
+                    }
+                    if (event.key.code == sf::Keyboard::F5) {
+                        handler->back();
                     }
                 case sf::Event::MouseButtonPressed:
                     if (event.mouseButton.button == sf::Mouse::Left) {
@@ -219,7 +229,7 @@ void GraphicalDisplay::drawField(Field field) {
     sf::Font font;
     font.loadFromFile("arial.ttf");
 
-    sf::Text text("F2 - New Game", font, 20);
+    sf::Text text("F2 - New Game / F5 - Move Back (only single player mode)", font, 20);
     text.setFillColor(sf::Color::Cyan);
     text.setPosition(5.f, 5.f);
 
@@ -235,13 +245,14 @@ void GraphicalDisplay::drawField(Field field) {
         nextMove = CROSS_CELL_CODE;
     }
     moveText.setFillColor(sf::Color::Red);
-    moveText.setPosition(325 - text.getGlobalBounds().width / 2, 650 - text.getGlobalBounds().height - 10);
+    moveText.setPosition(325 - moveText.getGlobalBounds().width / 2, 650 - moveText.getGlobalBounds().height - 10);
 
     window.clear();
     window.draw(gameField);
     window.draw(text);
     window.draw(moveText);
     window.display();
+    std::cout << "draw" << std::endl;
 }
 
 Position GraphicalDisplay::getFirstPlayerMove() {

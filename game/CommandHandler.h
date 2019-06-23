@@ -10,6 +10,8 @@ public:
     virtual void newGame() = 0;
 
     virtual void exit() = 0;
+
+    virtual void back() = 0;
 };
 
 #endif //BUU_TICTACTOE_COMMANDHANDLER_H
