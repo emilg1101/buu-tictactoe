@@ -1,10 +1,12 @@
 #include "Game.h"
 #include "algorithm/WinningCheckAlgorithm.h"
+#include <stack>
 
 PlayerIOStream *playerFirst;
 PlayerIOStream *playerSecond;
 Display *display;
 Saver *saver;
+stack <Position> stackMove;
 
 Field field;
 
@@ -56,6 +58,7 @@ Position checkPosition(Position position, PlayerIOStream *player) {
 bool Game::makeMove(int playerType, PlayerIOStream *player) {
     const Position &getMove = player->getMove();
     Position position = checkPosition(getMove, player);
+    stackMove.push(position);
     fillField(position, playerType);
 
     display->drawField(field);
@@ -78,4 +81,18 @@ void Game::setField(Field _field) {
 
 void Game::setLastPlayer(int _lastPlayer) {
     lastPlayer = _lastPlayer;
+}
+
+void Game::moveBack() {
+
+    if (!stackMove.empty()) {
+        Position &lastMove = stackMove.top();
+        field[lastMove.x][lastMove.y] = 0;
+        stackMove.pop();
+
+        Position &prevMove = stackMove.top();
+        field[prevMove.x][prevMove.y] = 0;
+        stackMove.pop();
+        display->drawField(field);
+    }
 }
