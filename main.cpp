@@ -14,7 +14,7 @@ public:
     Saver *saver;
 
     GameController() {
-        display = new GraphicalDisplay(this);
+        display = new ConsoleDisplay(this);
         saver = new Saver();
     }
 
