@@ -24,20 +24,19 @@ Game::Game(PlayerIOStream *_playerFirst, PlayerIOStream *_playerSecond, Display 
 
 void Game::start() {
     display->drawField(field);
-
     bool end;
     while (true) {
         if (lastPlayer == CIRCLE_CELL_CODE) {
-            end = makeMove(CROSS_CELL_CODE, playerFirst);
+            end = makeMove(playerFirst->type, playerFirst);
             if (end) {
-                display->showWinner(CROSS_CELL_CODE);
+                display->showWinner(FIRST_PLAYER_WIN);
                 return;
             }
             lastPlayer = CROSS_CELL_CODE;
         } else {
-            end = makeMove(CIRCLE_CELL_CODE, playerSecond);
+            end = makeMove(playerSecond->type, playerSecond);
             if (end) {
-                display->showWinner(CIRCLE_CELL_CODE);
+                display->showWinner(SECOND_PLAYER_WIN);
                 return;
             }
             lastPlayer = CIRCLE_CELL_CODE;
@@ -62,20 +61,23 @@ bool Game::makeMove(int playerType, PlayerIOStream *player) {
 
     display->drawField(field);
     playerSecond->setMove(position, playerType);
+    playerFirst->setMove(position, playerType);
     saver->newSave(field, playerType);
     return checkWin(field, playerType, position);
 }
 
 void Game::moveBack() {
 
-    if (!stackMove.empty()) {
+    if (stackMove.size() > 1) {
         Position &lastMove = stackMove.top();
         playerSecond->setMove(lastMove, BLANK_CELL_CODE);
+        playerFirst->setMove(lastMove, BLANK_CELL_CODE);
         field[lastMove.x][lastMove.y] = 0;
         stackMove.pop();
 
         Position &prevMove = stackMove.top();
         playerSecond->setMove(lastMove, BLANK_CELL_CODE);
+        playerFirst->setMove(lastMove, BLANK_CELL_CODE);
         field[prevMove.x][prevMove.y] = 0;
         stackMove.pop();
         display->drawField(field);
@@ -96,6 +98,7 @@ void Game::setField(Field _field) {
         for (int j = 0; j < field.getSize(); j++) {
             if (field[i][j] != BLANK_CELL_CODE) {
                 playerSecond->setMove(Position(i, j), field[i][j]);
+                playerFirst->setMove(Position(i, j), field[i][j]);
             }
         }
     }

@@ -28,6 +28,7 @@ struct Position {
 struct Configuration {
 
     bool IS_MULTIPLAYER;
+    bool IS_COMPUTER_FIRST = 0;
 };
 
 class Field {

@@ -61,13 +61,20 @@ public:
     void newGame() override {
         Configuration configuration = display->getConfiguration();
 
-        PlayerIOStream *firstPlayer = new Player(display, CROSS_CELL_CODE);
+        PlayerIOStream *firstPlayer;
         PlayerIOStream *secondPlayer;
 
         if (configuration.IS_MULTIPLAYER) {
+            firstPlayer = new Player(display, CROSS_CELL_CODE);
             secondPlayer = new Player(display, CIRCLE_CELL_CODE);
         } else {
-            secondPlayer = new ComputerPlayer(CIRCLE_CELL_CODE);
+            if (configuration.IS_COMPUTER_FIRST) {
+                firstPlayer = new ComputerPlayer(CROSS_CELL_CODE);
+                secondPlayer = new Player(display, CIRCLE_CELL_CODE);
+            } else {
+                firstPlayer = new Player(display, CROSS_CELL_CODE);
+                secondPlayer = new ComputerPlayer(CIRCLE_CELL_CODE);
+            }
         }
 
         saver->setFirstPlayerName(display->getFirstPlayerName());
